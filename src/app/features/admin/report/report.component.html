@@ -1,0 +1,50 @@
+<div class="report-container">
+  <!-- Tarjeta de Total de Ventas -->
+  <nz-card class="total-ventas-card">
+    <nz-statistic
+      [nzValue]="reporteVentas.ventas_totales"
+      [nzTitle]="'Total de Ventas'"
+      [nzPrefix]="dollarIcon"
+      [nzValueStyle]="{ color: '#66a956', fontSize: '24px', fontWeight: 'bold' }"
+    ></nz-statistic>
+  </nz-card>
+
+  <!-- Tarjeta de Rango de Fechas -->
+  <nz-card class="rango-fechas-card">
+    <nz-statistic
+      [nzTitle]="'Rango de Fechas'"
+      [nzValue]="reporteVentas.fecha_inicio + ' - ' + reporteVentas.fecha_fin"
+      [nzValueStyle]="{ color: '#66a956', fontSize: '18px', fontWeight: 'bold' }"
+      [nzPrefix]="calendarIcon"
+    ></nz-statistic>
+  </nz-card>
+
+  <!-- Tabla de Productos Más Vendidos -->
+  <nz-card class="productos-mas-vendidos-card" nzTitle="Productos Más Vendidos" [nzExtra]="fireIcon">
+    <nz-table #basicTable [nzData]="reporteVentas.productos_mas_vendidos" [nzBordered]="true">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad Vendida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of basicTable.data">
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.cantidad_vendida }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <!-- Gráfico de Ingresos por Categoría -->
+  <nz-card class="ingresos-categoria-card" nzTitle="Ingresos por Categoría" [nzExtra]="chartIcon">
+    <div #ingresosChartContainer></div>
+  </nz-card>
+</div>
+
+<!-- Declaración de iconos -->
+<ng-template #dollarIcon><i nz-icon nzType="dollar" nzTheme="outline" style="color: #66a956;"></i></ng-template>
+<ng-template #calendarIcon><i nz-icon nzType="calendar" nzTheme="outline" style="color: #66a956;"></i></ng-template>
+<ng-template #fireIcon><i nz-icon nzType="fire" nzTheme="outline" style="color: #FF6347;"></i></ng-template>
+<ng-template #chartIcon><i nz-icon nzType="bar-chart" nzTheme="outline" style="color: #66a956;"></i></ng-template>

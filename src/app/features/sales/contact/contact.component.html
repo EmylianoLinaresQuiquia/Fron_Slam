@@ -1,0 +1,140 @@
+<main>
+  <!-- sección -->
+  <section class="my-lg-14 my-8">
+    <!-- contenedor -->
+    <div class="container">
+      <div class="row">
+        <!-- columna -->
+        <div class="offset-lg-2 col-lg-8 col-12">
+          <div class="mb-8">
+            <!-- encabezado -->
+            <h1 class="h3">Consultas para Minoristas</h1>
+            <p class="lead mb-0">
+              Este formulario es solo para consultas de minoristas. Para
+              cualquier otra solicitud de soporte para clientes o compradores,
+              visite los enlaces debajo de este formulario.
+            </p>
+          </div>
+          <!-- formulario -->
+          <form (ngSubmit)="onSubmit()" class="row needs-validation" #contactForm="ngForm" novalidate>
+            <!-- entrada -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="contactFName">
+                Nombre
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="contactFName"
+                class="form-control"
+                name="contactFName"
+                placeholder="Ingrese su nombre"
+                required
+                ngModel
+              />
+              <div class="invalid-feedback">Por favor, ingrese su nombre.</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <!-- entrada -->
+              <label class="form-label" for="contactLName">
+                Apellido
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="contactLName"
+                class="form-control"
+                name="contactLName"
+                placeholder="Ingrese su apellido"
+                required
+                ngModel
+              />
+              <div class="invalid-feedback">Por favor, ingrese su apellido.</div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <!-- entrada -->
+              <label class="form-label" for="contactCompanyName">
+                Empresa
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="contactCompanyName"
+                name="contactCompanyName"
+                class="form-control"
+                placeholder="Nombre de su empresa"
+                required
+                ngModel
+              />
+              <div class="invalid-feedback">Por favor, ingrese el nombre de su empresa.</div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <!-- entrada -->
+              <label class="form-label" for="contactTitle">Título</label>
+              <input
+                type="text"
+                id="contactTitle"
+                name="contactTitle"
+                class="form-control"
+                placeholder="Su título"
+                required
+                ngModel
+              />
+              <div class="invalid-feedback">Por favor, ingrese su título.</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="contactEmail">
+                Correo Electrónico
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                type="email"
+                id="contactEmail"
+                name="contactEmail"
+                class="form-control"
+                placeholder="Ingrese su correo electrónico"
+                required
+                ngModel
+              />
+              <div class="invalid-feedback">Por favor, ingrese un correo electrónico válido.</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <!-- entrada -->
+              <label class="form-label" for="contactPhone">Teléfono</label>
+              <input
+                type="text"
+                id="contactPhone"
+                name="contactPhone"
+                class="form-control"
+                placeholder="Número de teléfono"
+                required
+                ngModel
+              />
+              <div class="invalid-feedback">Por favor, ingrese su número de teléfono.</div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <!-- entrada -->
+              <label class="form-label" for="contactTearea">Comentarios Adicionales</label>
+              <textarea
+                rows="3"
+                id="contactTearea"
+                class="form-control"
+                placeholder="Comentarios adicionales"
+                required
+                ngModel
+                name="contactTearea"
+              ></textarea>
+              <div class="invalid-feedback">Por favor, ingrese un mensaje.</div>
+            </div>
+            <div class="col-md-12">
+              <!-- botón -->
+              <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid">
+                Enviar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

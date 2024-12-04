@@ -1,0 +1,25 @@
+.report-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.total-ventas-card,
+.rango-fechas-card {
+  grid-column: span 1;
+}
+
+.productos-mas-vendidos-card,
+.ingresos-categoria-card {
+  grid-column: span 2;
+}
+
+nz-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.productos-mas-vendidos-card nz-table {
+  margin-top: 10px;
+}

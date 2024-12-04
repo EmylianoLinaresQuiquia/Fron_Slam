@@ -1,0 +1,1386 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>front-slan documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">front-slan documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  CustomersComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/admin/customers/customers.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-customers</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../modules/SharedModule.html" target="_self" >SharedModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./customers.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./customers.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clients" >clients</a>
+                            </li>
+                            <li>
+                                <a href="#filteredClients" >filteredClients</a>
+                            </li>
+                            <li>
+                                <a href="#filterStatus" >filterStatus</a>
+                            </li>
+                            <li>
+                                <a href="#isAddClientModalVisible" >isAddClientModalVisible</a>
+                            </li>
+                            <li>
+                                <a href="#isVisible" >isVisible</a>
+                            </li>
+                            <li>
+                                <a href="#newClient" >newClient</a>
+                            </li>
+                            <li>
+                                <a href="#searchQuery" >searchQuery</a>
+                            </li>
+                            <li>
+                                <a href="#sortColumn" >sortColumn</a>
+                            </li>
+                            <li>
+                                <a href="#sortDirection" >sortDirection</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addClient" >addClient</a>
+                            </li>
+                            <li>
+                                <a href="#applyFilters" >applyFilters</a>
+                            </li>
+                            <li>
+                                <a href="#handleAddClientCancel" >handleAddClientCancel</a>
+                            </li>
+                            <li>
+                                <a href="#handleCancel" >handleCancel</a>
+                            </li>
+                            <li>
+                                <a href="#handleOk" >handleOk</a>
+                            </li>
+                            <li>
+                                <a href="#isFormValid" >isFormValid</a>
+                            </li>
+                            <li>
+                                <a href="#resetNewClient" >resetNewClient</a>
+                            </li>
+                            <li>
+                                <a href="#showAddClientModal" >showAddClientModal</a>
+                            </li>
+                            <li>
+                                <a href="#showModal" >showModal</a>
+                            </li>
+                            <li>
+                                <a href="#toggleSort" >toggleSort</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:62</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addClient"></a>
+                    <span class="name">
+                        <span ><b>addClient</b></span>
+                        <a href="#addClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addClient(clientData: <a href="../interfaces/Client.html" target="_self">Partial&lt;Client&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientData</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Client.html" target="_self" >Partial&lt;Client&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyFilters"></a>
+                    <span class="name">
+                        <span ><b>applyFilters</b></span>
+                        <a href="#applyFilters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>applyFilters()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleAddClientCancel"></a>
+                    <span class="name">
+                        <span ><b>handleAddClientCancel</b></span>
+                        <a href="#handleAddClientCancel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleAddClientCancel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleCancel"></a>
+                    <span class="name">
+                        <span ><b>handleCancel</b></span>
+                        <a href="#handleCancel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleCancel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleOk"></a>
+                    <span class="name">
+                        <span ><b>handleOk</b></span>
+                        <a href="#handleOk"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleOk()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFormValid"></a>
+                    <span class="name">
+                        <span ><b>isFormValid</b></span>
+                        <a href="#isFormValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isFormValid()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetNewClient"></a>
+                    <span class="name">
+                        <span ><b>resetNewClient</b></span>
+                        <a href="#resetNewClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetNewClient()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showAddClientModal"></a>
+                    <span class="name">
+                        <span ><b>showAddClientModal</b></span>
+                        <a href="#showAddClientModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showAddClientModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showModal"></a>
+                    <span class="name">
+                        <span ><b>showModal</b></span>
+                        <a href="#showModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>showModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleSort"></a>
+                    <span class="name">
+                        <span ><b>toggleSort</b></span>
+                        <a href="#toggleSort"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleSort(column: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/app/features/admin/customers/customers.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>column</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clients"></a>
+                    <span class="name">
+                        <span ><b>clients</b></span>
+                        <a href="#clients"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Client.html" target="_self" >Client[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { id: &#x27;1&#x27;, name: &#x27;John Doe&#x27;, email: &#x27;john.doe@example.com&#x27;, phone: &#x27;+1234567890&#x27;, location: &#x27;Ciudadejemplo&#x27;, totalOrders: 5, totalSpent: &#x27;500&#x27;, status: &#x27;Active&#x27; },
+    { id: &#x27;2&#x27;, name: &#x27;Jane Smith&#x27;, email: &#x27;jane.smith@example.com&#x27;, phone: &#x27;+1234567891&#x27;, location: &#x27;Ciudadejemplo&#x27;, totalOrders: 3, totalSpent: &#x27;300&#x27;, status: &#x27;Inactive&#x27; },
+    // other clients...
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filteredClients"></a>
+                    <span class="name">
+                        <span ><b>filteredClients</b></span>
+                        <a href="#filteredClients"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Client.html" target="_self" >Client[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[...this.clients]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterStatus"></a>
+                    <span class="name">
+                        <span ><b>filterStatus</b></span>
+                        <a href="#filterStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;All&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isAddClientModalVisible"></a>
+                    <span class="name">
+                        <span ><b>isAddClientModalVisible</b></span>
+                        <a href="#isAddClientModalVisible"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isVisible"></a>
+                    <span class="name">
+                        <span ><b>isVisible</b></span>
+                        <a href="#isVisible"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newClient"></a>
+                    <span class="name">
+                        <span ><b>newClient</b></span>
+                        <a href="#newClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Client.html" target="_self" >Partial&lt;Client&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    name: &#x27;&#x27;,
+    email: &#x27;&#x27;,
+    phone: &#x27;&#x27;,
+    location: &#x27;&#x27;,
+    totalOrders: 0,
+    totalSpent: &#x27;0&#x27;,
+    status: &#x27;Active&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchQuery"></a>
+                    <span class="name">
+                        <span ><b>searchQuery</b></span>
+                        <a href="#searchQuery"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sortColumn"></a>
+                    <span class="name">
+                        <span ><b>sortColumn</b></span>
+                        <a href="#sortColumn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;name&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sortDirection"></a>
+                    <span class="name">
+                        <span ><b>sortDirection</b></span>
+                        <a href="#sortDirection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;asc&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/admin/customers/customers.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component,CUSTOM_ELEMENTS_SCHEMA } from &#x27;@angular/core&#x27;;
+import { SharedModule } from &#x27;../../../shared/shared.module&#x27;;
+
+interface Client {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  totalOrders: number;
+  totalSpent: string;
+  status: string;
+}
+@Component({
+  selector: &#x27;app-customers&#x27;,
+  standalone: true,
+  imports: [SharedModule],
+  templateUrl: &#x27;./customers.component.html&#x27;,
+  styleUrl: &#x27;./customers.component.css&#x27;
+})
+export class CustomersComponent {
+
+  isVisible &#x3D; false;
+
+
+  showModal(): void {
+    this.isVisible &#x3D; true;
+  }
+
+  handleOk(): void {
+    console.log(&#x27;Button ok clicked!&#x27;);
+    this.isVisible &#x3D; false;
+  }
+
+  handleCancel(): void {
+    console.log(&#x27;Button cancel clicked!&#x27;);
+    this.isVisible &#x3D; false;
+  }
+
+  clients: Client[] &#x3D; [
+    { id: &#x27;1&#x27;, name: &#x27;John Doe&#x27;, email: &#x27;john.doe@example.com&#x27;, phone: &#x27;+1234567890&#x27;, location: &#x27;Ciudadejemplo&#x27;, totalOrders: 5, totalSpent: &#x27;500&#x27;, status: &#x27;Active&#x27; },
+    { id: &#x27;2&#x27;, name: &#x27;Jane Smith&#x27;, email: &#x27;jane.smith@example.com&#x27;, phone: &#x27;+1234567891&#x27;, location: &#x27;Ciudadejemplo&#x27;, totalOrders: 3, totalSpent: &#x27;300&#x27;, status: &#x27;Inactive&#x27; },
+    // other clients...
+  ];
+
+  newClient: Partial&lt;Client&gt; &#x3D; {
+    name: &#x27;&#x27;,
+    email: &#x27;&#x27;,
+    phone: &#x27;&#x27;,
+    location: &#x27;&#x27;,
+    totalOrders: 0,
+    totalSpent: &#x27;0&#x27;,
+    status: &#x27;Active&#x27;
+  };
+
+  sortColumn: string &#x3D; &#x27;name&#x27;;
+  sortDirection: string &#x3D; &#x27;asc&#x27;;
+  filterStatus: string &#x3D; &#x27;All&#x27;;
+  searchQuery: string &#x3D; &#x27;&#x27;;
+  isAddClientModalVisible &#x3D; false;
+  
+  filteredClients: Client[] &#x3D; [...this.clients];
+
+  constructor() {
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.filteredClients &#x3D; this.clients.filter(client &#x3D;&gt; {
+      const matchesQuery &#x3D; client.name.toLowerCase().includes(this.searchQuery.toLowerCase()) || client.email.toLowerCase().includes(this.searchQuery.toLowerCase());
+      const matchesStatus &#x3D; this.filterStatus &#x3D;&#x3D;&#x3D; &#x27;All&#x27; || client.status &#x3D;&#x3D;&#x3D; this.filterStatus;
+      return matchesQuery &amp;&amp; matchesStatus;
+    });
+  }
+  
+  toggleSort(column: string) {
+    if (this.sortColumn &#x3D;&#x3D;&#x3D; column) {
+      this.sortDirection &#x3D; this.sortDirection &#x3D;&#x3D;&#x3D; &#x27;asc&#x27; ? &#x27;desc&#x27; : &#x27;asc&#x27;;
+    } else {
+      this.sortColumn &#x3D; column;
+      this.sortDirection &#x3D; &#x27;asc&#x27;;
+    }
+    this.applyFilters();
+  }
+
+  showAddClientModal() {
+    this.isAddClientModalVisible &#x3D; true;
+  }
+
+  handleAddClientCancel() {
+    this.isAddClientModalVisible &#x3D; false;
+  }
+
+  addClient(clientData: Partial&lt;Client&gt;) {
+    const newId &#x3D; (this.clients.length ? parseInt(this.clients[this.clients.length - 1].id) + 1 : 1).toString();
+    const newClient: Client &#x3D; { id: newId, ...clientData } as Client;
+    this.clients.push(newClient);
+    this.isAddClientModalVisible &#x3D; false;
+    this.resetNewClient();
+  }
+
+  resetNewClient() {
+    this.newClient &#x3D; {
+      name: &#x27;&#x27;,
+      email: &#x27;&#x27;,
+      phone: &#x27;&#x27;,
+      location: &#x27;&#x27;,
+      totalOrders: 0,
+      totalSpent: &#x27;0&#x27;,
+      status: &#x27;Active&#x27;
+    };
+  }
+
+  isFormValid() {
+    return this.newClient.name &amp;&amp; this.newClient.email &amp;&amp; this.newClient.phone;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;client-management&quot;&gt;
+    &lt;header class&#x3D;&quot;header&quot;&gt;
+      &lt;h1&gt;NexusFlow - Client Management&lt;/h1&gt;
+    &lt;/header&gt;
+  
+    &lt;div class&#x3D;&quot;controls&quot;&gt;
+      &lt;input [(ngModel)]&#x3D;&quot;searchQuery&quot; placeholder&#x3D;&quot;Search clients...&quot; (input)&#x3D;&quot;applyFilters()&quot; /&gt;
+      
+      &lt;nz-select [(ngModel)]&#x3D;&quot;filterStatus&quot; (ngModelChange)&#x3D;&quot;applyFilters()&quot; placeholder&#x3D;&quot;All Statuses&quot;&gt;
+        &lt;nz-option nzValue&#x3D;&quot;All&quot; nzLabel&#x3D;&quot;All Statuses&quot;&gt;&lt;/nz-option&gt;
+        &lt;nz-option nzValue&#x3D;&quot;Active&quot; nzLabel&#x3D;&quot;Active&quot;&gt;&lt;/nz-option&gt;
+        &lt;nz-option nzValue&#x3D;&quot;Inactive&quot; nzLabel&#x3D;&quot;Inactive&quot;&gt;&lt;/nz-option&gt;
+      &lt;/nz-select&gt;
+      
+      &lt;button nz-button nzType&#x3D;&quot;primary&quot; (click)&#x3D;&quot;showAddClientModal()&quot;&gt;Add Client&lt;/button&gt;
+    &lt;/div&gt;
+  
+    &lt;nz-table [nzData]&#x3D;&quot;filteredClients&quot;&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th (click)&#x3D;&quot;toggleSort(&#x27;id&#x27;)&quot;&gt;Client ID&lt;/th&gt;
+          &lt;th (click)&#x3D;&quot;toggleSort(&#x27;name&#x27;)&quot;&gt;Name&lt;/th&gt;
+          &lt;th&gt;Contact&lt;/th&gt;
+          &lt;th (click)&#x3D;&quot;toggleSort(&#x27;totalOrders&#x27;)&quot;&gt;Total Orders&lt;/th&gt;
+          &lt;th (click)&#x3D;&quot;toggleSort(&#x27;totalSpent&#x27;)&quot;&gt;Total Spent&lt;/th&gt;
+          &lt;th (click)&#x3D;&quot;toggleSort(&#x27;status&#x27;)&quot;&gt;Status&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr *ngFor&#x3D;&quot;let client of filteredClients&quot;&gt;
+          &lt;td&gt;{{ client.id }}&lt;/td&gt;
+          &lt;td&gt;{{ client.name }}&lt;/td&gt;
+          &lt;td&gt;
+            &lt;div&gt;{{ client.email }}&lt;/div&gt;
+            &lt;div&gt;{{ client.phone }}&lt;/div&gt;
+            &lt;div&gt;{{ client.location }}&lt;/div&gt;
+          &lt;/td&gt;
+          &lt;td&gt;{{ client.totalOrders }}&lt;/td&gt;
+          &lt;td&gt;{{ client.totalSpent }}&lt;/td&gt;
+          &lt;td&gt;
+            &lt;span [ngClass]&#x3D;&quot;client.status &#x3D;&#x3D;&#x3D; &#x27;Active&#x27; ? &#x27;status-active&#x27; : &#x27;status-inactive&#x27;&quot;&gt;{{ client.status }}&lt;/span&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/nz-table&gt;
+  
+    &lt;!-- Modal for adding new client --&gt;
+    &lt;nz-modal
+  [(nzVisible)]&#x3D;&quot;isAddClientModalVisible&quot;
+  nzTitle&#x3D;&quot;Add New Client&quot;
+  (nzOnCancel)&#x3D;&quot;handleAddClientCancel()&quot;
+  (nzOnOk)&#x3D;&quot;addClient(newClient)&quot;
+  [nzOkDisabled]&#x3D;&quot;!isFormValid()&quot;
+&gt;
+  &lt;ng-container *nzModalContent&gt;
+    &lt;form nz-form&gt;
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Name&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;input nz-input [(ngModel)]&#x3D;&quot;newClient.name&quot; name&#x3D;&quot;name&quot; required placeholder&#x3D;&quot;Enter client name&quot; /&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Email&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;input nz-input [(ngModel)]&#x3D;&quot;newClient.email&quot; name&#x3D;&quot;email&quot; type&#x3D;&quot;email&quot; required placeholder&#x3D;&quot;Enter client email&quot; /&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Phone&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;input nz-input [(ngModel)]&#x3D;&quot;newClient.phone&quot; name&#x3D;&quot;phone&quot; required placeholder&#x3D;&quot;Enter client phone&quot; /&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Location&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;input nz-input [(ngModel)]&#x3D;&quot;newClient.location&quot; name&#x3D;&quot;location&quot; placeholder&#x3D;&quot;Enter client location&quot; /&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Total Orders&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;input nz-input [(ngModel)]&#x3D;&quot;newClient.totalOrders&quot; name&#x3D;&quot;totalOrders&quot; type&#x3D;&quot;number&quot; placeholder&#x3D;&quot;Enter total orders&quot; /&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Total Spent&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;input nz-input [(ngModel)]&#x3D;&quot;newClient.totalSpent&quot; name&#x3D;&quot;totalSpent&quot; placeholder&#x3D;&quot;Enter total spent&quot; /&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+
+      &lt;nz-form-item&gt;
+        &lt;nz-form-label [nzSpan]&#x3D;&quot;6&quot;&gt;Status&lt;/nz-form-label&gt;
+        &lt;nz-form-control [nzSpan]&#x3D;&quot;18&quot;&gt;
+          &lt;nz-select [(ngModel)]&#x3D;&quot;newClient.status&quot; name&#x3D;&quot;status&quot; placeholder&#x3D;&quot;Select status&quot;&gt;
+            &lt;nz-option nzValue&#x3D;&quot;Active&quot; nzLabel&#x3D;&quot;Active&quot;&gt;&lt;/nz-option&gt;
+            &lt;nz-option nzValue&#x3D;&quot;Inactive&quot; nzLabel&#x3D;&quot;Inactive&quot;&gt;&lt;/nz-option&gt;
+          &lt;/nz-select&gt;
+        &lt;/nz-form-control&gt;
+      &lt;/nz-form-item&gt;
+    &lt;/form&gt;
+  &lt;/ng-container&gt;
+&lt;/nz-modal&gt;
+
+  &lt;/div&gt;
+  
+
+
+
+
+
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="client-management">    <header class="header">      <h1>NexusFlow - Client Management</h1>    </header>      <div class="controls">      <input [(ngModel)]="searchQuery" placeholder="Search clients..." (input)="applyFilters()" />            <nz-select [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()" placeholder="All Statuses">        <nz-option nzValue="All" nzLabel="All Statuses"></nz-option>        <nz-option nzValue="Active" nzLabel="Active"></nz-option>        <nz-option nzValue="Inactive" nzLabel="Inactive"></nz-option>      </nz-select>            <button nz-button nzType="primary" (click)="showAddClientModal()">Add Client</button>    </div>      <nz-table [nzData]="filteredClients">      <thead>        <tr>          <th (click)="toggleSort(\'id\')">Client ID</th>          <th (click)="toggleSort(\'name\')">Name</th>          <th>Contact</th>          <th (click)="toggleSort(\'totalOrders\')">Total Orders</th>          <th (click)="toggleSort(\'totalSpent\')">Total Spent</th>          <th (click)="toggleSort(\'status\')">Status</th>        </tr>      </thead>      <tbody>        <tr *ngFor="let client of filteredClients">          <td>{{ client.id }}</td>          <td>{{ client.name }}</td>          <td>            <div>{{ client.email }}</div>            <div>{{ client.phone }}</div>            <div>{{ client.location }}</div>          </td>          <td>{{ client.totalOrders }}</td>          <td>{{ client.totalSpent }}</td>          <td>            <span [ngClass]="client.status === \'Active\' ? \'status-active\' : \'status-inactive\'">{{ client.status }}</span>          </td>        </tr>      </tbody>    </nz-table>      <!-- Modal for adding new client -->    <nz-modal  [(nzVisible)]="isAddClientModalVisible"  nzTitle="Add New Client"  (nzOnCancel)="handleAddClientCancel()"  (nzOnOk)="addClient(newClient)"  [nzOkDisabled]="!isFormValid()">  <ng-container *nzModalContent>    <form nz-form>      <nz-form-item>        <nz-form-label [nzSpan]="6">Name</nz-form-label>        <nz-form-control [nzSpan]="18">          <input nz-input [(ngModel)]="newClient.name" name="name" required placeholder="Enter client name" />        </nz-form-control>      </nz-form-item>      <nz-form-item>        <nz-form-label [nzSpan]="6">Email</nz-form-label>        <nz-form-control [nzSpan]="18">          <input nz-input [(ngModel)]="newClient.email" name="email" type="email" required placeholder="Enter client email" />        </nz-form-control>      </nz-form-item>      <nz-form-item>        <nz-form-label [nzSpan]="6">Phone</nz-form-label>        <nz-form-control [nzSpan]="18">          <input nz-input [(ngModel)]="newClient.phone" name="phone" required placeholder="Enter client phone" />        </nz-form-control>      </nz-form-item>      <nz-form-item>        <nz-form-label [nzSpan]="6">Location</nz-form-label>        <nz-form-control [nzSpan]="18">          <input nz-input [(ngModel)]="newClient.location" name="location" placeholder="Enter client location" />        </nz-form-control>      </nz-form-item>      <nz-form-item>        <nz-form-label [nzSpan]="6">Total Orders</nz-form-label>        <nz-form-control [nzSpan]="18">          <input nz-input [(ngModel)]="newClient.totalOrders" name="totalOrders" type="number" placeholder="Enter total orders" />        </nz-form-control>      </nz-form-item>      <nz-form-item>        <nz-form-label [nzSpan]="6">Total Spent</nz-form-label>        <nz-form-control [nzSpan]="18">          <input nz-input [(ngModel)]="newClient.totalSpent" name="totalSpent" placeholder="Enter total spent" />        </nz-form-control>      </nz-form-item>      <nz-form-item>        <nz-form-label [nzSpan]="6">Status</nz-form-label>        <nz-form-control [nzSpan]="18">          <nz-select [(ngModel)]="newClient.status" name="status" placeholder="Select status">            <nz-option nzValue="Active" nzLabel="Active"></nz-option>            <nz-option nzValue="Inactive" nzLabel="Inactive"></nz-option>          </nz-select>        </nz-form-control>      </nz-form-item>    </form>  </ng-container></nz-modal>  </div>  </div>'
+    var COMPONENTS = [{'name': 'AdminHeaderComponent', 'selector': 'app-admin-header'},{'name': 'AdminLayoutComponent', 'selector': 'app-admin-layout'},{'name': 'AdminSidebarComponent', 'selector': 'app-admin-sidebar'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ATMComponent', 'selector': 'app-atm'},{'name': 'ButtonComponent', 'selector': 'app-button'},{'name': 'CartComponent', 'selector': 'app-cart'},{'name': 'CatalogComponent', 'selector': 'app-catalog'},{'name': 'CategorieComponent', 'selector': 'app-categorie'},{'name': 'CheckoutComponent', 'selector': 'app-checkout'},{'name': 'CustomersComponent', 'selector': 'app-customers'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DetailOrderComponent', 'selector': 'app-detail-order'},{'name': 'FormCategoryComponent', 'selector': 'app-form-category'},{'name': 'FormCustomerComponent', 'selector': 'app-form-customer'},{'name': 'FormProductComponent', 'selector': 'app-form-product'},{'name': 'ListCategoryComponent', 'selector': 'app-list-category'},{'name': 'ListCustomerComponent', 'selector': 'app-list-customer'},{'name': 'ListOrderComponent', 'selector': 'app-list-order'},{'name': 'ListProductComponent', 'selector': 'app-list-product'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'OrderComponent', 'selector': 'app-order'},{'name': 'ProductComponent', 'selector': 'app-product'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportComponent', 'selector': 'app-report'},{'name': 'SalesFooterComponent', 'selector': 'app-sales-footer'},{'name': 'SalesHeaderComponent', 'selector': 'app-sales-header'},{'name': 'SalesLayoutComponent', 'selector': 'app-sales-layout'},{'name': 'TableComponent', 'selector': 'app-table'}];
+    var DIRECTIVES = [{'name': 'HighlightDirective', 'selector': '[appHighlight]'}];
+    var ACTUAL_COMPONENT = {'name': 'CustomersComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'CustomersComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

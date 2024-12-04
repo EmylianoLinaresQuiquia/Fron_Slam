@@ -1,0 +1,99 @@
+<div class="container">
+  <h1>Gestión de Pedidos</h1>
+
+  <!-- Categorías -->
+  <section>
+    <h2>Categorías</h2>
+    <ul>
+      <li *ngFor="let categoria of categorias">
+        <strong>{{ categoria.nombre }}</strong>: {{ categoria.descripcion }}
+      </li>
+    </ul>
+  </section>
+
+  <!-- Subcategorías -->
+  <section>
+    <h2>Subcategorías</h2>
+    <ul>
+      <li *ngFor="let subcategoria of subcategorias">
+        <strong>{{ subcategoria.nombre }}</strong>: {{ subcategoria.descripcion }}
+        <small>(Categoría ID: {{ subcategoria.categoria_id }})</small>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Pedidos -->
+  <section>
+    <h2>Pedidos</h2>
+    <ul>
+      <li *ngFor="let pedido of pedidos">
+        <div class="pedido-card">
+          <p>
+            <strong>Pedido ID:</strong> {{ pedido.id_pedido }} <br />
+            <strong>Usuario ID:</strong> {{ pedido.id_usuario }} <br />
+            <strong>Total:</strong> ${{ pedido.total }} <br />
+            <strong>Estado:</strong> {{ pedido.estado }}
+          </p>
+          <button (click)="verDetallePedido(pedido.id_pedido)" class="btn btn-info">Ver Detalles</button>
+          <button (click)="crearFacturaParaPedido(pedido.id_pedido)" class="btn btn-success">Crear Factura</button>
+          <button
+            (click)="cambiarEstadoPedido(pedido.id_pedido, 'enviado')"
+            class="btn btn-warning"
+            [disabled]="pedido.estado === 'enviado' || pedido.estado === 'entregado'"
+          >
+            Marcar como Enviado
+          </button>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Detalles del Pedido -->
+  <section *ngIf="detallesPedido.length > 0">
+    <h3>Detalles del Pedido</h3>
+    <ul>
+      <li *ngFor="let detalle of detallesPedido">
+        <strong>Producto ID:</strong> {{ detalle.id_producto }} -
+        <strong>Cantidad:</strong> {{ detalle.cantidad }} -
+        <strong>Precio Unitario:</strong> ${{ detalle.precio_unitario }}
+      </li>
+    </ul>
+  </section>
+
+  <!--
+  <section>
+    <h2>Usuarios</h2>
+    <ul>
+      <li *ngFor="let usuario of usuarios">
+        <p>
+          <strong>Nombre:</strong> {{ usuario.nombre }} <br />
+          <strong>Rol ID:</strong> {{ usuario.id_rol }} <br />
+          <strong>Activo:</strong> {{ usuario.activo ? 'Sí' : 'No' }}
+        </p>
+        <button (click)="verDetalleUsuario(usuario.id_usuario)" class="btn btn-info">
+          Ver Detalles
+        </button>
+      </li>
+    </ul>
+  </section>
+
+  <section *ngIf="detalleUsuario">
+    <h3>Detalles del Usuario</h3>
+    <p>
+      <strong>Email:</strong> {{ detalleUsuario.email }} <br />
+      <strong>Teléfono:</strong> {{ detalleUsuario.telefono }} <br />
+      <strong>Dirección:</strong> {{ detalleUsuario.direccion_calle }}, {{ detalleUsuario.direccion_ciudad }},
+      {{ detalleUsuario.direccion_codigo_postal }}, {{ detalleUsuario.direccion_pais }}
+    </p>
+  </section>-->
+
+  <!-- Métodos de Pago -->
+  <section>
+    <h2>Métodos de Pago</h2>
+    <ul>
+      <li *ngFor="let metodo of metodosPago">
+        <strong>{{ metodo.nombre }}</strong>
+      </li>
+    </ul>
+  </section>
+</div>

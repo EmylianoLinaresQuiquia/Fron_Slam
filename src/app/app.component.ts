@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SwaggerUiComponent } from './shared/swagger-ui/swagger-ui.component'; // Import SwaggerUiComponent
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SwaggerUiComponent], // Asegúrate de incluirlo aquí
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'FrontSlan';

@@ -1,0 +1,8 @@
+{
+    "name": "Documentación del Proyecto",
+    "children": [
+      { "name": "Introducción", "path": "src/introduction.md" },
+      { "name": "Estructura de Layout", "path": "src/layout-structure.md" }
+    ]
+  }
+  
