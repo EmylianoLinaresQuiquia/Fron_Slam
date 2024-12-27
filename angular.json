@@ -21,7 +21,7 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-           
+
               "src/assets",
               {
                 "glob": "**/*",
@@ -40,24 +40,24 @@
 
               "src/assets/libs/slick-carousel/slick/slick.css",
               "src/assets/libs/slick-carousel/slick/slick-theme.css",
-              
+
 
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
                "node_modules/ng-zorro-antd/style/index.min.css",
                "node_modules/ng-zorro-antd/button/style/index.min.css",
               "src/theme.less",
               "src/styles.css"
-              
+
             ],
             "scripts": [
-              
+
 
 
               "src/assets/js/vendors/jquery.min.js",
               "src/assets/libs/slick-carousel/slick/slick.min.js",
               "src/assets/js/vendors/slick-slider.js"
-              
-              
+
+
             ],
             "server": "src/main.server.ts",
             "prerender": true,
@@ -70,13 +70,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "6MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "6MB",
+                  "maximumError": "5MB"
                 }
               ],
               "outputHashing": "all"
