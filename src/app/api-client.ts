@@ -17,7 +17,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IApiClient {
     /**
-     * Obtiene la lista de todas las categorías.
+     * Obtiene la lista de todas las categorías con sus subcategorías.
      * @return OK
      */
     categoriaAll(): Observable<Categoria[]>;
@@ -27,6 +27,17 @@ export interface IApiClient {
      * @return Created
      */
     categoriaPOST(body?: Categoria | undefined): Observable<Categoria>;
+    /**
+     * Filtra los productos según los parámetros proporcionados.
+     * @param nombre (optional) Filtro: nombre del producto
+     * @param precioMin (optional) Filtro: precio mínimo
+     * @param precioMax (optional) Filtro: precio máximo
+     * @param categoriaId (optional) Filtro: categoría
+     * @param subcategoriaId (optional) Filtro: subcategoría
+     * @param minCalificacion (optional) Filtro: calificación mínima
+     * @return OK
+     */
+    filtrar(nombre?: string | undefined, precioMin?: number | undefined, precioMax?: number | undefined, categoriaId?: number | undefined, subcategoriaId?: number | undefined, minCalificacion?: number | undefined): Observable<CategoriaFiltrado[]>;
     /**
      * Edita una categoría existente.
      * @param body (optional)
@@ -105,6 +116,16 @@ export interface IApiClient {
      */
     historial(id: number): Observable<HistorialEstadoPedido[]>;
     /**
+     * Marca un pedido como cancelado (soft delete).
+     * @return OK
+     */
+    pedidoDELETE(idPedido: number): Observable<void>;
+    /**
+     * @param estado (optional)
+     * @return OK
+     */
+    usuario(idUsuario: number, estado?: string | undefined): Observable<Pedido[]>;
+    /**
      * @return OK
      */
     productoDELETE(id: number): Observable<any>;
@@ -154,13 +175,6 @@ export interface IApiClient {
      */
     insertarMultiplesProductos(productos?: Producto[] | undefined): Observable<any>;
     /**
-     * Obtiene el reporte de ventas en un rango de fechas específico.
-     * @param fechaInicio (optional) Fecha de inicio del rango de ventas.
-     * @param fechaFin (optional) Fecha de fin del rango de ventas.
-     * @return Reporte generado con éxito.
-     */
-    ventas(fechaInicio?: Date | undefined, fechaFin?: Date | undefined): Observable<void>;
-    /**
      * Obtiene el pedido más reciente realizado en el sistema.
      * @return OK
      */
@@ -193,6 +207,11 @@ export interface IApiClient {
      * @return OK
      */
     clientesFrecuentes(limite?: number | undefined): Observable<ClienteFrecuente[]>;
+    /**
+     * Obtiene las notificaciones generadas en el sistema.
+     * @return OK
+     */
+    notificaciones(): Observable<void>;
     /**
      * @param body (optional)
      * @return OK
@@ -245,11 +264,6 @@ export interface IApiClient {
      */
     editarUsuario(body?: UsuarioEditar | undefined): Observable<any>;
     /**
-     * @param body (optional)
-     * @return OK
-     */
-    cambiarContrasena(body?: CambiarContrasenaRequest | undefined): Observable<any>;
-    /**
      * @return OK
      */
     eliminarUsuario(idUsuario: number): Observable<any>;
@@ -262,6 +276,16 @@ export interface IApiClient {
      * @return OK
      */
     consultarAuditoria(idUsuario: number): Observable<any>;
+    /**
+     * @param body (optional)
+     * @return OK
+     */
+    solicitarRecuperacion(body?: SolicitudRecuperacion | undefined): Observable<any>;
+    /**
+     * @param body (optional)
+     * @return OK
+     */
+    cambiarContrasena(body?: CambioContrasena | undefined): Observable<any>;
 }
 
 @Injectable()
@@ -276,7 +300,7 @@ export class ApiClient implements IApiClient {
   }
 
     /**
-     * Obtiene la lista de todas las categorías.
+     * Obtiene la lista de todas las categorías con sus subcategorías.
      * @return OK
      */
     categoriaAll(): Observable<Categoria[]> {
@@ -382,6 +406,95 @@ export class ApiClient implements IApiClient {
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result201 = Categoria.fromJS(resultData201);
             return _observableOf(result201);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Filtra los productos según los parámetros proporcionados.
+     * @param nombre (optional) Filtro: nombre del producto
+     * @param precioMin (optional) Filtro: precio mínimo
+     * @param precioMax (optional) Filtro: precio máximo
+     * @param categoriaId (optional) Filtro: categoría
+     * @param subcategoriaId (optional) Filtro: subcategoría
+     * @param minCalificacion (optional) Filtro: calificación mínima
+     * @return OK
+     */
+    filtrar(nombre?: string | undefined, precioMin?: number | undefined, precioMax?: number | undefined, categoriaId?: number | undefined, subcategoriaId?: number | undefined, minCalificacion?: number | undefined): Observable<CategoriaFiltrado[]> {
+        let url_ = this.baseUrl + "/api/Categoria/filtrar?";
+        if (nombre === null)
+            throw new Error("The parameter 'nombre' cannot be null.");
+        else if (nombre !== undefined)
+            url_ += "nombre=" + encodeURIComponent("" + nombre) + "&";
+        if (precioMin === null)
+            throw new Error("The parameter 'precioMin' cannot be null.");
+        else if (precioMin !== undefined)
+            url_ += "precioMin=" + encodeURIComponent("" + precioMin) + "&";
+        if (precioMax === null)
+            throw new Error("The parameter 'precioMax' cannot be null.");
+        else if (precioMax !== undefined)
+            url_ += "precioMax=" + encodeURIComponent("" + precioMax) + "&";
+        if (categoriaId === null)
+            throw new Error("The parameter 'categoriaId' cannot be null.");
+        else if (categoriaId !== undefined)
+            url_ += "categoriaId=" + encodeURIComponent("" + categoriaId) + "&";
+        if (subcategoriaId === null)
+            throw new Error("The parameter 'subcategoriaId' cannot be null.");
+        else if (subcategoriaId !== undefined)
+            url_ += "subcategoriaId=" + encodeURIComponent("" + subcategoriaId) + "&";
+        if (minCalificacion === null)
+            throw new Error("The parameter 'minCalificacion' cannot be null.");
+        else if (minCalificacion !== undefined)
+            url_ += "minCalificacion=" + encodeURIComponent("" + minCalificacion) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processFiltrar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFiltrar(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CategoriaFiltrado[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CategoriaFiltrado[]>;
+        }));
+    }
+
+    protected processFiltrar(response: HttpResponseBase): Observable<CategoriaFiltrado[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CategoriaFiltrado.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1274,6 +1387,137 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Marca un pedido como cancelado (soft delete).
+     * @return OK
+     */
+    pedidoDELETE(idPedido: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Pedido/{idPedido}";
+        if (idPedido === undefined || idPedido === null)
+            throw new Error("The parameter 'idPedido' must be defined.");
+        url_ = url_.replace("{idPedido}", encodeURIComponent("" + idPedido));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPedidoDELETE(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPedidoDELETE(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPedidoDELETE(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param estado (optional)
+     * @return OK
+     */
+    usuario(idUsuario: number, estado?: string | undefined): Observable<Pedido[]> {
+        let url_ = this.baseUrl + "/api/Pedido/usuario/{idUsuario}?";
+        if (idUsuario === undefined || idUsuario === null)
+            throw new Error("The parameter 'idUsuario' must be defined.");
+        url_ = url_.replace("{idUsuario}", encodeURIComponent("" + idUsuario));
+        if (estado === null)
+            throw new Error("The parameter 'estado' cannot be null.");
+        else if (estado !== undefined)
+            url_ += "estado=" + encodeURIComponent("" + estado) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUsuario(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUsuario(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Pedido[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Pedido[]>;
+        }));
+    }
+
+    protected processUsuario(response: HttpResponseBase): Observable<Pedido[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Pedido.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     productoDELETE(id: number): Observable<any> {
@@ -1771,68 +2015,6 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * Obtiene el reporte de ventas en un rango de fechas específico.
-     * @param fechaInicio (optional) Fecha de inicio del rango de ventas.
-     * @param fechaFin (optional) Fecha de fin del rango de ventas.
-     * @return Reporte generado con éxito.
-     */
-    ventas(fechaInicio?: Date | undefined, fechaFin?: Date | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Reporte/ventas?";
-        if (fechaInicio === null)
-            throw new Error("The parameter 'fechaInicio' cannot be null.");
-        else if (fechaInicio !== undefined)
-            url_ += "fechaInicio=" + encodeURIComponent(fechaInicio ? "" + fechaInicio.toISOString() : "") + "&";
-        if (fechaFin === null)
-            throw new Error("The parameter 'fechaFin' cannot be null.");
-        else if (fechaFin !== undefined)
-            url_ += "fechaFin=" + encodeURIComponent(fechaFin ? "" + fechaFin.toISOString() : "") + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processVentas(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processVentas(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processVentas(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("Si las fechas proporcionadas no son v\u00e1lidas.", status, _responseText, _headers);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * Obtiene el pedido más reciente realizado en el sistema.
      * @return OK
      */
@@ -2183,6 +2365,58 @@ export class ApiClient implements IApiClient {
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result400 = ProblemDetails.fromJS(resultData400);
             return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * Obtiene las notificaciones generadas en el sistema.
+     * @return OK
+     */
+    notificaciones(): Observable<void> {
+        let url_ = this.baseUrl + "/api/Reportes/notificaciones";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processNotificaciones(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processNotificaciones(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processNotificaciones(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Internal Server Error", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2857,79 +3091,6 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @param body (optional)
-     * @return OK
-     */
-    cambiarContrasena(body?: CambiarContrasenaRequest | undefined): Observable<any> {
-        let url_ = this.baseUrl + "/api/Usuario/CambiarContrasena";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCambiarContrasena(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCambiarContrasena(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<any>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<any>;
-        }));
-    }
-
-    protected processCambiarContrasena(response: HttpResponseBase): Observable<any> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
-            return _observableOf(result200);
-            }));
-        } else if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result400 = resultData400 !== undefined ? resultData400 : <any>null;
-
-            return throwException("Bad Request", status, _responseText, _headers, result400);
-            }));
-        } else if (status === 500) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result500 = resultData500 !== undefined ? resultData500 : <any>null;
-
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @return OK
      */
     eliminarUsuario(idUsuario: number): Observable<any> {
@@ -3143,50 +3304,152 @@ export class ApiClient implements IApiClient {
         }
         return _observableOf(null as any);
     }
-}
 
-export class CambiarContrasenaRequest implements ICambiarContrasenaRequest {
-    idUsuario?: number;
-    contrasenaActual?: string | undefined;
-    contrasenaNueva?: string | undefined;
+    /**
+     * @param body (optional)
+     * @return OK
+     */
+    solicitarRecuperacion(body?: SolicitudRecuperacion | undefined): Observable<any> {
+        let url_ = this.baseUrl + "/api/Usuario/SolicitarRecuperacion";
+        url_ = url_.replace(/[?&]$/, "");
 
-    constructor(data?: ICambiarContrasenaRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSolicitarRecuperacion(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSolicitarRecuperacion(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<any>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<any>;
+        }));
+    }
+
+    protected processSolicitarRecuperacion(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result400 = resultData400 !== undefined ? resultData400 : <any>null;
+
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = resultData500 !== undefined ? resultData500 : <any>null;
+
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
+        return _observableOf(null as any);
     }
 
-    init(_data?: any) {
-        if (_data) {
-            this.idUsuario = _data["idUsuario"];
-            this.contrasenaActual = _data["contrasenaActual"];
-            this.contrasenaNueva = _data["contrasenaNueva"];
+    /**
+     * @param body (optional)
+     * @return OK
+     */
+    cambiarContrasena(body?: CambioContrasena | undefined): Observable<any> {
+        let url_ = this.baseUrl + "/api/Usuario/CambiarContrasena";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCambiarContrasena(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCambiarContrasena(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<any>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<any>;
+        }));
+    }
+
+    protected processCambiarContrasena(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result400 = resultData400 !== undefined ? resultData400 : <any>null;
+
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = resultData500 !== undefined ? resultData500 : <any>null;
+
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
+        return _observableOf(null as any);
     }
-
-    static fromJS(data: any): CambiarContrasenaRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new CambiarContrasenaRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["idUsuario"] = this.idUsuario;
-        data["contrasenaActual"] = this.contrasenaActual;
-        data["contrasenaNueva"] = this.contrasenaNueva;
-        return data;
-    }
-}
-
-export interface ICambiarContrasenaRequest {
-    idUsuario?: number;
-    contrasenaActual?: string | undefined;
-    contrasenaNueva?: string | undefined;
 }
 
 export class CambiarEstadoRequest implements ICambiarEstadoRequest {
@@ -3229,6 +3492,46 @@ export interface ICambiarEstadoRequest {
     idUsuario?: number;
 }
 
+export class CambioContrasena implements ICambioContrasena {
+    token?: string | undefined;
+    nuevaContrasena?: string | undefined;
+
+    constructor(data?: ICambioContrasena) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.token = _data["token"];
+            this.nuevaContrasena = _data["nuevaContrasena"];
+        }
+    }
+
+    static fromJS(data: any): CambioContrasena {
+        data = typeof data === 'object' ? data : {};
+        let result = new CambioContrasena();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["token"] = this.token;
+        data["nuevaContrasena"] = this.nuevaContrasena;
+        return data;
+    }
+}
+
+export interface ICambioContrasena {
+    token?: string | undefined;
+    nuevaContrasena?: string | undefined;
+}
+
 export class CancelarPedidoRequest implements ICancelarPedidoRequest {
     idUsuario?: number;
 
@@ -3268,11 +3571,13 @@ export interface ICancelarPedidoRequest {
 /** Representa una categoría de productos en el sistema de e-commerce. */
 export class Categoria implements ICategoria {
     /** Identificador único de la categoría. */
-    id_categoria?: number;
+    idCategoria?: number;
     /** Nombre de la categoría. */
     nombre?: string | undefined;
     /** Descripción de la categoría. */
     descripcion?: string | undefined;
+    /** Lista de subcategorías asociadas. */
+    subcategorias?: Subcategoria[] | undefined;
 
     constructor(data?: ICategoria) {
         if (data) {
@@ -3285,9 +3590,14 @@ export class Categoria implements ICategoria {
 
     init(_data?: any) {
         if (_data) {
-            this.id_categoria = _data["id_categoria"];
+            this.idCategoria = _data["idCategoria"];
             this.nombre = _data["nombre"];
             this.descripcion = _data["descripcion"];
+            if (Array.isArray(_data["subcategorias"])) {
+                this.subcategorias = [] as any;
+                for (let item of _data["subcategorias"])
+                    this.subcategorias!.push(Subcategoria.fromJS(item));
+            }
         }
     }
 
@@ -3300,9 +3610,14 @@ export class Categoria implements ICategoria {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id_categoria"] = this.id_categoria;
+        data["idCategoria"] = this.idCategoria;
         data["nombre"] = this.nombre;
         data["descripcion"] = this.descripcion;
+        if (Array.isArray(this.subcategorias)) {
+            data["subcategorias"] = [];
+            for (let item of this.subcategorias)
+                data["subcategorias"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -3310,11 +3625,101 @@ export class Categoria implements ICategoria {
 /** Representa una categoría de productos en el sistema de e-commerce. */
 export interface ICategoria {
     /** Identificador único de la categoría. */
-    id_categoria?: number;
+    idCategoria?: number;
     /** Nombre de la categoría. */
     nombre?: string | undefined;
     /** Descripción de la categoría. */
     descripcion?: string | undefined;
+    /** Lista de subcategorías asociadas. */
+    subcategorias?: Subcategoria[] | undefined;
+}
+
+export class CategoriaFiltrado implements ICategoriaFiltrado {
+    id_producto?: number;
+    producto?: string | undefined;
+    descripcion?: string | undefined;
+    marca?: string | undefined;
+    precio?: number;
+    cantidad_disponible?: number;
+    unidad_medida?: string | undefined;
+    imagen_url?: string | undefined;
+    fecha_agregado?: Date;
+    activo?: boolean;
+    categoria?: string | undefined;
+    subcategoria?: string | undefined;
+    promedio_resenas?: number | undefined;
+    total_resenas?: number;
+
+    constructor(data?: ICategoriaFiltrado) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id_producto = _data["id_producto"];
+            this.producto = _data["producto"];
+            this.descripcion = _data["descripcion"];
+            this.marca = _data["marca"];
+            this.precio = _data["precio"];
+            this.cantidad_disponible = _data["cantidad_disponible"];
+            this.unidad_medida = _data["unidad_medida"];
+            this.imagen_url = _data["imagen_url"];
+            this.fecha_agregado = _data["fecha_agregado"] ? new Date(_data["fecha_agregado"].toString()) : <any>undefined;
+            this.activo = _data["activo"];
+            this.categoria = _data["categoria"];
+            this.subcategoria = _data["subcategoria"];
+            this.promedio_resenas = _data["promedio_resenas"];
+            this.total_resenas = _data["total_resenas"];
+        }
+    }
+
+    static fromJS(data: any): CategoriaFiltrado {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoriaFiltrado();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id_producto"] = this.id_producto;
+        data["producto"] = this.producto;
+        data["descripcion"] = this.descripcion;
+        data["marca"] = this.marca;
+        data["precio"] = this.precio;
+        data["cantidad_disponible"] = this.cantidad_disponible;
+        data["unidad_medida"] = this.unidad_medida;
+        data["imagen_url"] = this.imagen_url;
+        data["fecha_agregado"] = this.fecha_agregado ? this.fecha_agregado.toISOString() : <any>undefined;
+        data["activo"] = this.activo;
+        data["categoria"] = this.categoria;
+        data["subcategoria"] = this.subcategoria;
+        data["promedio_resenas"] = this.promedio_resenas;
+        data["total_resenas"] = this.total_resenas;
+        return data;
+    }
+}
+
+export interface ICategoriaFiltrado {
+    id_producto?: number;
+    producto?: string | undefined;
+    descripcion?: string | undefined;
+    marca?: string | undefined;
+    precio?: number;
+    cantidad_disponible?: number;
+    unidad_medida?: string | undefined;
+    imagen_url?: string | undefined;
+    fecha_agregado?: Date;
+    activo?: boolean;
+    categoria?: string | undefined;
+    subcategoria?: string | undefined;
+    promedio_resenas?: number | undefined;
+    total_resenas?: number;
 }
 
 /** Detalla los clientes más frecuentes y su actividad en el sistema. */
@@ -3376,8 +3781,8 @@ export interface IClienteFrecuente {
 }
 
 export class CrearPedidoRequest implements ICrearPedidoRequest {
-    idCliente?: number;
-    productosJson?: string | undefined;
+    id_usuario?: number;
+    productos?: ProductoPedidoRequest[] | undefined;
     direccionCalle?: string | undefined;
     direccionCiudad?: string | undefined;
     direccionCodigoPostal?: string | undefined;
@@ -3394,8 +3799,12 @@ export class CrearPedidoRequest implements ICrearPedidoRequest {
 
     init(_data?: any) {
         if (_data) {
-            this.idCliente = _data["idCliente"];
-            this.productosJson = _data["productosJson"];
+            this.id_usuario = _data["id_usuario"];
+            if (Array.isArray(_data["productos"])) {
+                this.productos = [] as any;
+                for (let item of _data["productos"])
+                    this.productos!.push(ProductoPedidoRequest.fromJS(item));
+            }
             this.direccionCalle = _data["direccionCalle"];
             this.direccionCiudad = _data["direccionCiudad"];
             this.direccionCodigoPostal = _data["direccionCodigoPostal"];
@@ -3412,8 +3821,12 @@ export class CrearPedidoRequest implements ICrearPedidoRequest {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["idCliente"] = this.idCliente;
-        data["productosJson"] = this.productosJson;
+        data["id_usuario"] = this.id_usuario;
+        if (Array.isArray(this.productos)) {
+            data["productos"] = [];
+            for (let item of this.productos)
+                data["productos"].push(item.toJSON());
+        }
         data["direccionCalle"] = this.direccionCalle;
         data["direccionCiudad"] = this.direccionCiudad;
         data["direccionCodigoPostal"] = this.direccionCodigoPostal;
@@ -3423,8 +3836,8 @@ export class CrearPedidoRequest implements ICrearPedidoRequest {
 }
 
 export interface ICrearPedidoRequest {
-    idCliente?: number;
-    productosJson?: string | undefined;
+    id_usuario?: number;
+    productos?: ProductoPedidoRequest[] | undefined;
     direccionCalle?: string | undefined;
     direccionCiudad?: string | undefined;
     direccionCodigoPostal?: string | undefined;
@@ -3581,15 +3994,19 @@ export interface IPago {
 
 /** Representa un pedido realizado por un cliente. */
 export class Pedido implements IPedido {
-    idPedido?: number;
-    idUsuario?: number;
-    total?: number;
+    id_pedido?: number;
+    nombre_pedido?: string | undefined;
+    cliente?: string | undefined;
+    fecha_pedido?: Date;
+    metodo_pago?: string | undefined;
     estado?: string | undefined;
-    fechaPedido?: Date;
-    direccionEntregaCalle?: string | undefined;
-    direccionEntregaCiudad?: string | undefined;
-    direccionEntregaCodigoPostal?: string | undefined;
-    direccionEntregaPais?: string | undefined;
+    email?: string | undefined;
+    teléfono?: string | undefined;
+    direccion_envio?: string | undefined;
+    subtotal?: string | undefined;
+    gran_total?: string | undefined;
+    imagenes_productos?: string | undefined;
+    cantidad_total?: number;
 
     constructor(data?: IPedido) {
         if (data) {
@@ -3602,15 +4019,19 @@ export class Pedido implements IPedido {
 
     init(_data?: any) {
         if (_data) {
-            this.idPedido = _data["idPedido"];
-            this.idUsuario = _data["idUsuario"];
-            this.total = _data["total"];
+            this.id_pedido = _data["id_pedido"];
+            this.nombre_pedido = _data["nombre_pedido"];
+            this.cliente = _data["cliente"];
+            this.fecha_pedido = _data["fecha_pedido"] ? new Date(_data["fecha_pedido"].toString()) : <any>undefined;
+            this.metodo_pago = _data["metodo_pago"];
             this.estado = _data["estado"];
-            this.fechaPedido = _data["fechaPedido"] ? new Date(_data["fechaPedido"].toString()) : <any>undefined;
-            this.direccionEntregaCalle = _data["direccionEntregaCalle"];
-            this.direccionEntregaCiudad = _data["direccionEntregaCiudad"];
-            this.direccionEntregaCodigoPostal = _data["direccionEntregaCodigoPostal"];
-            this.direccionEntregaPais = _data["direccionEntregaPais"];
+            this.email = _data["email"];
+            this.teléfono = _data["teléfono"];
+            this.direccion_envio = _data["direccion_envio"];
+            this.subtotal = _data["subtotal"];
+            this.gran_total = _data["gran_total"];
+            this.imagenes_productos = _data["imagenes_productos"];
+            this.cantidad_total = _data["cantidad_total"];
         }
     }
 
@@ -3623,30 +4044,38 @@ export class Pedido implements IPedido {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["idPedido"] = this.idPedido;
-        data["idUsuario"] = this.idUsuario;
-        data["total"] = this.total;
+        data["id_pedido"] = this.id_pedido;
+        data["nombre_pedido"] = this.nombre_pedido;
+        data["cliente"] = this.cliente;
+        data["fecha_pedido"] = this.fecha_pedido ? this.fecha_pedido.toISOString() : <any>undefined;
+        data["metodo_pago"] = this.metodo_pago;
         data["estado"] = this.estado;
-        data["fechaPedido"] = this.fechaPedido ? this.fechaPedido.toISOString() : <any>undefined;
-        data["direccionEntregaCalle"] = this.direccionEntregaCalle;
-        data["direccionEntregaCiudad"] = this.direccionEntregaCiudad;
-        data["direccionEntregaCodigoPostal"] = this.direccionEntregaCodigoPostal;
-        data["direccionEntregaPais"] = this.direccionEntregaPais;
+        data["email"] = this.email;
+        data["teléfono"] = this.teléfono;
+        data["direccion_envio"] = this.direccion_envio;
+        data["subtotal"] = this.subtotal;
+        data["gran_total"] = this.gran_total;
+        data["imagenes_productos"] = this.imagenes_productos;
+        data["cantidad_total"] = this.cantidad_total;
         return data;
     }
 }
 
 /** Representa un pedido realizado por un cliente. */
 export interface IPedido {
-    idPedido?: number;
-    idUsuario?: number;
-    total?: number;
+    id_pedido?: number;
+    nombre_pedido?: string | undefined;
+    cliente?: string | undefined;
+    fecha_pedido?: Date;
+    metodo_pago?: string | undefined;
     estado?: string | undefined;
-    fechaPedido?: Date;
-    direccionEntregaCalle?: string | undefined;
-    direccionEntregaCiudad?: string | undefined;
-    direccionEntregaCodigoPostal?: string | undefined;
-    direccionEntregaPais?: string | undefined;
+    email?: string | undefined;
+    teléfono?: string | undefined;
+    direccion_envio?: string | undefined;
+    subtotal?: string | undefined;
+    gran_total?: string | undefined;
+    imagenes_productos?: string | undefined;
+    cantidad_total?: number;
 }
 
 /** Genera un reporte del pedido más reciente realizado en el sistema. */
@@ -3945,6 +4374,46 @@ export interface IProductoMasVendido {
     cantidadVendida?: number;
     /** Ingresos generados por el producto. */
     ingresos?: number;
+}
+
+export class ProductoPedidoRequest implements IProductoPedidoRequest {
+    id_producto?: number;
+    cantidad?: number;
+
+    constructor(data?: IProductoPedidoRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id_producto = _data["id_producto"];
+            this.cantidad = _data["cantidad"];
+        }
+    }
+
+    static fromJS(data: any): ProductoPedidoRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductoPedidoRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id_producto"] = this.id_producto;
+        data["cantidad"] = this.cantidad;
+        return data;
+    }
+}
+
+export interface IProductoPedidoRequest {
+    id_producto?: number;
+    cantidad?: number;
 }
 
 export class Productoid implements IProductoid {
@@ -4291,6 +4760,42 @@ export interface IRol {
     descripcion?: string | undefined;
 }
 
+export class SolicitudRecuperacion implements ISolicitudRecuperacion {
+    email?: string | undefined;
+
+    constructor(data?: ISolicitudRecuperacion) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+        }
+    }
+
+    static fromJS(data: any): SolicitudRecuperacion {
+        data = typeof data === 'object' ? data : {};
+        let result = new SolicitudRecuperacion();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        return data;
+    }
+}
+
+export interface ISolicitudRecuperacion {
+    email?: string | undefined;
+}
+
 /** Representa una subcategoría de productos en el sistema de e-commerce. */
 export class Subcategoria implements ISubcategoria {
     /** Identificador único de la subcategoría. */
@@ -4300,7 +4805,7 @@ export class Subcategoria implements ISubcategoria {
     /** Descripción de la subcategoría. */
     descripcion?: string | undefined;
     /** Identificador de la categoría principal de esta subcategoría. */
-    categoria_id?: number;
+    idCategoria?: number;
 
     constructor(data?: ISubcategoria) {
         if (data) {
@@ -4316,7 +4821,7 @@ export class Subcategoria implements ISubcategoria {
             this.id_subcategoria = _data["id_subcategoria"];
             this.nombre = _data["nombre"];
             this.descripcion = _data["descripcion"];
-            this.categoria_id = _data["categoria_id"];
+            this.idCategoria = _data["idCategoria"];
         }
     }
 
@@ -4332,7 +4837,7 @@ export class Subcategoria implements ISubcategoria {
         data["id_subcategoria"] = this.id_subcategoria;
         data["nombre"] = this.nombre;
         data["descripcion"] = this.descripcion;
-        data["categoria_id"] = this.categoria_id;
+        data["idCategoria"] = this.idCategoria;
         return data;
     }
 }
@@ -4346,7 +4851,7 @@ export interface ISubcategoria {
     /** Descripción de la subcategoría. */
     descripcion?: string | undefined;
     /** Identificador de la categoría principal de esta subcategoría. */
-    categoria_id?: number;
+    idCategoria?: number;
 }
 
 /** Representa un cliente en el sistema de e-commerce. */

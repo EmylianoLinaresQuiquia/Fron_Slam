@@ -25,43 +25,38 @@ export class LoginComponent {
   private failedAttempts = 0;
   private isLocked = false;
 
-  public alertService: AlertService;
+
 
   constructor(
     private fb: FormBuilder,
     private apiClient: ApiClient,
     private router: Router,
-    alertService: AlertService, // Inyección de dependencia
-    private cookieService: CookieService
+    private alertService: AlertService
   ) {
-    this.alertService = alertService;
     this.loginForm = this.fb.group({
       nombre: ['', [Validators.required]],
       contrasena: ['', [Validators.required, Validators.minLength(5)]],
     });
   }
 
-
-  onSubmit() {
-    this.errorMessage = null;
-
+  onSubmit(): void {
     if (this.isLocked) {
-      this.alertService.showAlert('warning', 'La cuenta está bloqueada. Intenta nuevamente más tarde.');
+      this.alertService.showAlert('warning', 'La cuenta está bloqueada. Intenta nuevamente más tarde.', 7000);
       return;
     }
 
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      this.alertService.showAlert('warning', 'Por favor, completa todos los campos requeridos.', 3000);
       return;
     }
 
     this.loading = true;
 
-    // Crear una instancia de UsuarioLogin
     const credentials = new UsuarioLogin({
       email: this.loginForm.value.nombre,
       contrasena: this.loginForm.value.contrasena,
-      googleLogin: false
+      googleLogin: false,
     });
 
     this.apiClient.iniciarSesion(credentials).subscribe({
@@ -69,19 +64,16 @@ export class LoginComponent {
         this.loading = false;
         this.failedAttempts = 0;
 
-        if (response?.mensaje?.startsWith('Inicio de sesión exitoso')) { // Cambiado "message" a "mensaje"
+        if (response?.mensaje?.startsWith('Inicio de sesión exitoso')) {
           const userDetails = response as UsuarioDetalles;
 
-          // Guarda los detalles en la cookie
-          this.cookieService.set('user', JSON.stringify(userDetails), { path: '/', expires: 7 });
+          // Guardar detalles del usuario en localStorage
+          localStorage.setItem('user', JSON.stringify(userDetails));
 
-          // Muestra una alerta de éxito
-          this.alertService.showAlert('success', `Bienvenido, ${userDetails.nombre}.`);
-
-          // Redirige al dashboard
+          this.alertService.showAlert('success', `Bienvenido, ${userDetails.nombre}.`, 5000);
           this.router.navigate(['/admin/dashboard']);
         } else {
-          this.alertService.showAlert('warning', 'Inicio de sesión exitoso, pero no se encontraron detalles.');
+          this.alertService.showAlert('info', 'Inicio de sesión exitoso, pero no se encontraron detalles.', 5000);
         }
       },
       error: (error) => {
@@ -94,17 +86,13 @@ export class LoginComponent {
             this.isLocked = false;
             this.failedAttempts = 0;
           }, 30000); // Bloqueo por 30 segundos
-          this.alertService.showAlert('danger', 'Demasiados intentos fallidos. Cuenta bloqueada por 30 segundos.');
+          this.alertService.showAlert('danger', 'Demasiados intentos fallidos. Cuenta bloqueada por 30 segundos.', 7000);
         } else {
-          this.alertService.showAlert('error', 'Credenciales incorrectas. Intenta nuevamente.');
+          this.alertService.showAlert('danger', 'Credenciales incorrectas. Intenta nuevamente.', 5000);
         }
 
         console.error('Error al iniciar sesión:', error);
       },
     });
   }
-
-
-
-
 }

@@ -12,11 +12,11 @@ export class AlertService {
   private alertSubject = new BehaviorSubject<Alert | null>(null);
   alert$ = this.alertSubject.asObservable();
 
-  showAlert(type: Alert['type'], message: string): void {
+  showAlert(type: Alert['type'], message: string, duration: number = 5000): void {
     this.alertSubject.next({ type, message });
 
-    // Opcional: limpiar alerta después de un tiempo
-    setTimeout(() => this.clearAlert(), 5000);
+    // Limpia automáticamente la alerta después de un tiempo
+    setTimeout(() => this.clearAlert(), duration);
   }
 
   clearAlert(): void {

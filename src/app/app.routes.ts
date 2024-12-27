@@ -15,5 +15,5 @@ export const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
   },
   { path: '', redirectTo: 'auth', pathMatch: 'full' }, // Redirige a auth inicialmente
-  { path: '**', redirectTo: 'auth' }, // Redirige a auth para rutas no encontradas
+  { path: '**', redirectTo: 'auth' }, // Redirige a auth para rutas no encontradas*/
 ];

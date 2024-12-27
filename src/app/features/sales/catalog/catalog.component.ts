@@ -5,6 +5,7 @@ import { Productolist,Producto } from '../../admin/interfaces/producto.model';
 import { SharedService } from '../../admin/services/shared.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { CarritoService } from '../../../shared/services/carrito.service';
 declare var $: any;
 @Component({
   selector: 'app-catalog',
@@ -19,11 +20,12 @@ export class CatalogComponent  {
   @ViewChild('slider', { static: false }) slider!: ElementRef;
   productos: any[] = [];
   productoSeleccionado: any;
-
+  producto: any = null;
   constructor(private productService: ProductoService,
     private sharedService: SharedService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private carritoService: CarritoService
   ) {}
 
   ngOnInit(): void {
@@ -112,27 +114,14 @@ export class CatalogComponent  {
   }
 
   agregarAlCarrito(producto: any): void {
-    if (!producto) {
-      console.error('Producto inválido.');
+    if (producto) {
+      this.carritoService.agregarProducto(producto);
+      alert('Producto agregado al carrito.');
+    } else {
       alert('No se pudo agregar el producto al carrito.');
-      return;
     }
-
-    let carrito: any[] = [];
-
-    const carritoActual = localStorage.getItem('carrito');
-    if (carritoActual) {
-      carrito = JSON.parse(carritoActual);
-    }
-
-    carrito.push(producto);
-    console.log('Carrito actualizado:', carrito);
-
-    // Guardar en localStorage
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-
-    alert(`${producto.producto_nombre} agregado al carrito!`);
   }
+
 
 
 

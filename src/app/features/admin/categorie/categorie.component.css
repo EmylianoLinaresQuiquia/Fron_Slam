@@ -1,38 +1,22 @@
-.container {
-    padding: 20px;
+.alert-overlay {
+  position: fixed; /* Fija la posición en la pantalla */
+  top: 20px; /* Se ajusta la distancia desde la parte superior */
+  left: 50%; /* Centra horizontalmente */
+  transform: translateX(-50%); /* Corrige el desplazamiento del centrado */
+  z-index: 1050; /* Asegura que esté por encima del modal (por defecto los modales usan z-index: 1040) */
+  max-width: 90%; /* Limita el ancho para pantallas pequeñas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega una sombra */
+  animation: fadeIn 0.3s ease-out; /* Efecto de entrada */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
   }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
-  
-  .category-list {
-    background: #f9f9f9;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #66a956;
-  }
-  
-  .category-item,
-  .subcategory-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px;
-  }
-  
-  .category-item button,
-  .subcategory-item button {
-    background: none;
-    border: none;
-    color: #66a956;
-    cursor: pointer;
-  }
-  
-  .category-item.expanded {
-    background-color: #e6f7e6;
-  }
-  
+}

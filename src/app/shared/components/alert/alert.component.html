@@ -1,0 +1,10 @@
+<div
+  *ngIf="alert"
+  class="alert alert-{{ alert.type }} d-flex align-items-center"
+  [class.show]="alert"
+  [class.hide]="!alert"
+  role="alert"
+>
+  <svg *ngIf="icons[alert.type]" [innerHTML]="icons[alert.type]" class="me-2" width="24" height="24"></svg>
+  <div>{{ alert.message }}</div>
+</div>

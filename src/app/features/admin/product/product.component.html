@@ -1,394 +1,691 @@
-<!-- principal -->
+
 <main class="main-content-wrapper">
-   <div class="container">
+  <div class="container">
      <div class="row mb-8">
-       <div class="col-md-12">
-         <!-- encabezado de página -->
-         <div class="d-md-flex justify-content-between align-items-center">
-           <div>
-             <h2>Productos</h2>
-             <!-- migas de pan -->
-             <nav aria-label="breadcrumb">
-               <ol class="breadcrumb mb-0">
-                 <li class="breadcrumb-item"><a href="#" class="text-inherit">Panel de control</a></li>
-                 <li class="breadcrumb-item active" aria-current="page">Productos</li>
-               </ol>
-             </nav>
+        <div class="col-md-12">
+           <!-- page header -->
+           <div class="d-md-flex justify-content-between align-items-center">
+              <div>
+                 <h2>Productos</h2>
+
+              </div>
+              <!-- button -->
+              <div>
+                 <a  data-bs-toggle="modal"
+                 data-bs-target="#guardarProductoModal"  class="btn btn-primary">Agregar nuevo Producto</a>
+              </div>
            </div>
-           <!-- botón -->
-           <div>
-            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal" (click)="resetForm()">Agregar Producto</a>
-           </div>
-         </div>
-       </div>
+        </div>
      </div>
-     <!-- fila -->
+     <!-- row -->
      <div class="row">
-       <div class="col-xl-12 col-12 mb-5">
-         <!-- tarjeta -->
-         <div class="card h-100 card-lg">
-           <!--<div class="px-6 py-6">
-             <div class="row justify-content-between">
-               
-               <div class="col-lg-4 col-md-6 col-12 mb-2 mb-lg-0">
-                 <form class="d-flex" role="search">
-                   <input class="form-control" type="search" placeholder="Buscar productos" aria-label="Buscar" />
-                 </form>
-               </div>
-              
-               <div class="col-lg-2 col-md-4 col-12">
-                 <select class="form-select">
-                   <option selected>Estado</option>
-                   <option value="1">Activo</option>
-                   <option value="2">Inactivo</option>
-                   <option value="3">Borrador</option>
-                 </select>
-               </div>
-             </div>
-           </div>-->
-           <!-- cuerpo de tarjeta -->
-           <div class="card-body p-0">
-             <!-- tabla -->
-             <div class="table-responsive">
-              <nz-table
-          #basicTable
-          [nzBordered]="true"
-          [nzData]="filteredProducts"
-          [nzSize]="'middle'"
-          
-          [nzShowPagination]="true"
-          [nzPaginationPosition]="'bottom'"
-          [nzScroll]="{ x: '1000px' }"
-          [nzShowQuickJumper]="true"
-          [nzLoading]="isLoading"
-         
-        >
-        <thead>
-          <tr>
-            <th>Imagen</th>
-            <th>
-              Nombre
-              <input
-                nz-input
-                [(ngModel)]="filterNombre"
-                (ngModelChange)="aplicarFiltro()"
-                placeholder="Buscar"
-                class="mb-2"
-              />
-            </th>
-            <th>
-              Categoría
-              <input
-                nz-input
-                [(ngModel)]="filterCategoria"
-                (ngModelChange)="aplicarFiltro()"
-                placeholder="Buscar categoría"
-                class="mb-2"
-              />
-            </th>
-            <th>
-              Estado
-              <nz-select
-              [(ngModel)]="filterActivo"
-              (ngModelChange)="aplicarFiltro()"
-                class="w-100"
-                [nzAllowClear]="true"
-                [nzPlaceHolder]="'Seleccionar estado'"
+        <div class="col-xl-12 col-12 mb-5">
+           <!-- card -->
+           <div class="card h-100 card-lg">
+              <div class="px-6 py-6">
+                 <div class="row justify-content-between">
+                    <!-- form -->
+                    <div class="col-lg-4 col-md-6 col-12 mb-2 mb-lg-0">
+                       <form class="d-flex" role="search">
+                        <input
+                        class="form-control"
+                        type="search"
+                        placeholder="Buscar productos"
+                        name="searchQuery"
+                        [(ngModel)]="searchQuery"
+                        (input)="applyFilters()"
+                        aria-label="Search"
+                      />
 
-              >
-                <nz-option [nzValue]="true" [nzLabel]="'Activo'"></nz-option>
-                <nz-option [nzValue]="false" [nzLabel]="'Inactivo'"></nz-option>
-              </nz-select>
-            </th>
-            <th>Precio</th>
-            <th>Creado el</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-  <tbody>
-    <tr *ngFor="let product of filteredProducts">
-      <td>
-        <img
-          [src]="product.imagen_url"
-          alt="{{ product.producto_nombre }}"
-          class="icon-md"
-        />
-      </td>
-      <td>{{ product.producto_nombre }}</td>
-      <td>{{ product.categoria_nombre }}</td>
-      <td>
-        <span
-          [ngClass]="
-            product.activo
-              ? 'badge bg-light-primary text-dark-primary'
-              : 'badge bg-light-secondary text-dark-secondary'
-          "
-        >
-          {{ product.activo ? 'Activo' : 'Inactivo' }}
-        </span>
-      </td>
-      <td>${{ product.precio | number: '1.2-2' }}</td>
-      <td>{{ product.fecha_agregado | date: 'dd MMM yyyy' }}</td>
-      <td>
-        <button
-        nz-button
-        nzType="text"
-        data-bs-toggle="modal"
-        data-bs-target="#productModal"
-        (click)="cargarProductoEnFormulario(product.id_producto)"
-        nz-tooltip
-        nzTooltipTitle="Editar"
-      >
-        <i nz-icon nzType="edit"></i>
-      </button>
-        <button
-          nz-button
-          nzType="text"
-          nzDanger
-          (click)="eliminarProducto(product.id_producto)"
 
-          nz-tooltip
-          nzTooltipTitle="Eliminar"
-        >
-          <i nz-icon nzType="delete"></i>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-              </nz-table>
+                       </form>
+                    </div>
+                    <!-- select option -->
+                    <div class="col-lg-2 col-md-4 col-12">
+                      <select
+                        class="form-select"
+                        [(ngModel)]="selectedStatus"
+                        (ngModelChange)="applyFilters()"
+                      >
+                        <option value="">Estado</option>
+                        <option value="Active">Activo</option>
+                        <option value="Inactive">Inactivo</option>
 
-             </div>
+                      </select>
+
+                    </div>
+                 </div>
+              </div>
+              <!-- card body -->
+              <div class="card-body p-0">
+                 <!-- table -->
+                 <div class="table-responsive">
+                  <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
+                    <thead class="bg-light">
+                      <tr>
+                        <th>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="checkAll" />
+                            <label class="form-check-label" for="checkAll"></label>
+                          </div>
+                        </th>
+                        <th>Imagen</th>
+                        <th>Nombre producto</th>
+                        <th>Categoria</th>
+                        <th>Estado</th>
+                        <th>Precio</th>
+                        <th>Creado en</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let product of filteredProducts">
+                        <td>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              [value]="product.id_producto"
+                              [checked]="product.selected"
+
+                            />
+                            <label class="form-check-label"></label>
+                          </div>
+                        </td>
+                        <td>
+                          <a href="#!">
+                            <img
+                              [src]="product.imagen_url || '../assets/images/default-product.jpg'"
+                              [alt]="product.producto_nombre"
+                              class="icon-shape icon-md"
+                            />
+                          </a>
+                        </td>
+                        <td>
+                          <a  class="text-reset">{{ product.producto_nombre }}</a>
+                        </td>
+                        <td>{{ product.categoria_nombre }}</td>
+                        <td>
+                          <span
+                            class="badge"
+                            [ngClass]="product.activo ? 'bg-light-primary text-dark-primary' : 'bg-light-secondary text-dark-secondary'"
+                          >
+                            {{ product.activo ? 'Active' : 'Inactive' }}
+                          </span>
+                        </td>
+                        <td>S/{{ product.precio | number: '1.2-2' }}</td>
+                        <td>{{ product.fecha_agregado | date: 'dd MMM yyyy' }}</td>
+                        <td>
+                          <div class="dropdown">
+                            <a
+
+                              class="text-reset"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i class="feather-icon icon-more-vertical fs-5"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  (click)="eliminarProducto(product.id_producto)"
+                                >
+                                  <i class="bi bi-trash me-3"></i> Eliminar
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  data-bs-toggle="modal"
+                                                    data-bs-target="#editarProductoModal"
+                                                    (click)="cargarProductoEnFormulario(product.id_producto)"
+                                >
+                                  <i class="bi bi-pencil-square me-3"></i> Editar
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+
            </div>
-           <!--<div class="border-top d-md-flex justify-content-between align-items-center px-6 py-6">
-             <span>Mostrando 1 a 8 de 12 entradas</span>
-             <nav class="mt-2 mt-md-0">
-               <ul class="pagination mb-0">
-                 <li class="page-item disabled"><a class="page-link" href="#!">Anterior</a></li>
-                 <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                 <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                 <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                 <li class="page-item"><a class="page-link" href="#!">Siguiente</a></li>
-               </ul>
-             </nav>
-           </div>-->
-         </div>
-       </div>
+        </div>
      </div>
-   </div>
- </main>
+  </div>
+</main>
 
 
- <!-- Modal -->
+
+ <!-- Modal guardar-->
  <div
  class="modal fade"
- id="productModal"
+ id="guardarProductoModal"
  tabindex="-1"
- aria-labelledby="productModalLabel"
+ aria-labelledby="guardarProductoModalLabel"
  aria-hidden="true"
 >
-   <div class="modal-dialog" style="max-width: 900px;
-    margin-right: 100px;">
-     <div class="modal-content">
-       <div class="modal-header">
-        <h5 class="modal-title" id="productModalLabel">
-          {{ productoSeleccionado ? 'Editar Producto' : 'Agregar Producto' }}
-        </h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-       </div>
-       <div class="modal-body">
-         <!-- principal -->
-         <main class="main-content-wrapper">
-          <div class="container">
+ <div class="modal-dialog" style="max-width: 900px; margin-right: 100px;">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="guardarProductoModalLabel">Agregar Producto</h5>
+       <button
+         type="button"
+         class="btn-close"
+         data-bs-dismiss="modal"
+         aria-label="Cerrar"
+       ></button>
+     </div>
+     <div class="modal-body">
+       <main class="main-content-wrapper">
+         <div class="container">
+           <form [formGroup]="productoForm" (ngSubmit)="guardarProducto()">
+             <div class="row">
+               <!-- Información del Producto -->
+               <div class="col-lg-8 col-12">
+                 <div class="card mb-6 card-lg">
+                   <div class="card-body p-6">
+                     <h4 class="mb-4 h5">Información del Producto</h4>
+                     <div class="row">
+                       <!-- Nombre -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Nombre</label>
+                         <input
+                           formControlName="nombre"
+                           type="text"
+                           class="form-control"
+                           placeholder="Nombre del Producto"
+                         />
+                         <div
+                           *ngIf="productoForm.get('nombre')?.touched && productoForm.get('nombre')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           El nombre es obligatorio.
+                         </div>
+                       </div>
+
+                       <!-- Categoría -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Categoría del Producto</label>
+                         <select formControlName="categoria_id" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una categoría
+                           </option>
+                           <option
+                             *ngFor="let categoria of categorias$ | async"
+                             [value]="categoria.idCategoria"
+                           >
+                             {{ categoria.nombre }}
+                           </option>
+                         </select>
+                         <div
+                           *ngIf="productoForm.get('categoria_id')?.touched && productoForm.get('categoria_id')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La categoría es obligatoria.
+                         </div>
+                       </div>
+
+                       <!-- SubCategoría -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Subcategoría</label>
+                         <select formControlName="subcategoria_id" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una subcategoría
+                           </option>
+                           <option
+                             *ngFor="let subcategoria of subcategorias$ | async"
+                             [value]="subcategoria.id_subcategoria"
+                           >
+                             {{ subcategoria.nombre }}
+                           </option>
+                         </select>
+                       </div>
+
+                       <!-- Marca -->
 
 
-            <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
-              <div class="row">
-                <!-- Información del Producto -->
-                <div class="col-lg-8 col-12">
-                  <div class="card mb-6 card-lg">
-                    <div class="card-body p-6">
-                      <h4 class="mb-4 h5">Información del Producto</h4>
-                      <div class="row">
-                        <!-- Nombre -->
-                        <div class="mb-3 col-lg-6">
-                          <label class="form-label">Título</label>
-                          <input
-                            formControlName="nombre"
-                            type="text"
-                            class="form-control"
-                            placeholder="Nombre del Producto"
-                          />
-                        </div>
-            
-                        <!-- Categoría -->
-                        <div class="mb-3 col-lg-6">
-                          <label class="form-label">Categoría del Producto</label>
-                          <select formControlName="categoria_id" class="form-select">
-                            <option value="" disabled selected>Seleccione una categoría</option>
-                            <option
-                              *ngFor="let categoria of categorias$ | async"
-                              [value]="categoria.idCategoria"
-                            >
-                              {{ categoria.nombre }}
-                            </option>
-                          </select>
-                        </div>
-            
-                        <!-- SubCategoría -->
-                        <div class="mb-3 col-lg-6">
-                          <label class="form-label">SubCategoría del Producto</label>
-                          <select formControlName="subcategoria_id" class="form-select">
-                            <option value="" disabled selected>Seleccione una subcategoría</option>
-                            <option
-                              *ngFor="let subcategoria of subcategorias$ | async"
-                              [value]="subcategoria.id_subcategoria"
-                            >
-                              {{ subcategoria.nombre }}
-                            </option>
-                          </select>
-                        </div>
-            
-                        <!-- Marca -->
-                        <div class="mb-3 col-lg-6">
-                          <label class="form-label">Marca</label>
-                          <select formControlName="marca" class="form-select">
-                            <option value="" disabled selected>Seleccione una marca</option>
-                            <option
-                              *ngFor="let marca of marcas"
-                              [value]="marca.id"
-                            >
-                              {{ marca.nombre }}
-                            </option>
-                          </select>
-                        </div>
-            
-                        <!-- Unidad de Medida -->
-                        <div class="mb-3 col-lg-6">
-                          <label class="form-label">Unidad de Medida</label>
-                          <select formControlName="unidad_medida" class="form-select">
-                            <option value="" disabled selected>Seleccione una unidad</option>
-                            <option value="kg">Kilogramos (kg)</option>
-                            <option value="lt">Litros (lt)</option>
-                            <option value="unidad">Unidad</option>
-                          </select>
-                        </div>
-            
-                        <!-- Cantidad Disponible -->
-                        <div class="mb-3 col-lg-6">
-                          <label class="form-label">Cantidad Disponible</label>
-                          <input
-                            formControlName="cantidad_disponible"
-                            type="number"
-                            class="form-control"
-                            placeholder="Cantidad"
-                          />
-                        </div>
-            
-                        <!-- Imágenes -->
-                        <div class="mb-3 col-lg-12 mt-5">
-                          <h4 class="mb-3 h5">Imágenes del Producto</h4>
-            
-                          <!-- Mostrar imagen actual (imagen_url) -->
-                          <div *ngIf="productoSeleccionado?.imagen_url" class="mb-3">
-                            <label class="form-label">Imagen Actual:</label>
-                            <img
-                              [src]="productoSeleccionado.imagen_url"
-                              alt="Imagen actual del producto"
-                              class="img-thumbnail"
-                              style="max-height: 200px; max-width: 200px;"
-                            />
-                          </div>
-            
-                          <!-- Subir nueva imagen (imagen_archivo) -->
-                          <nz-upload
-                            nzListType="picture-card"
-                            [nzFileList]="imagenes"
-                            [nzShowUploadList]="true"
-                            [nzAccept]="'image/*'"
-                            [nzMultiple]="false"
-                            (nzChange)="onFileChange($event)"
-                          >
-                          </nz-upload>
-                        </div>
-            
-                        <!-- Descripción -->
-                        <div class="mb-3 col-lg-12 mt-5">
-                          <h4 class="mb-3 h5">Descripciones del Producto</h4>
-                          <textarea
-                            formControlName="descripcion"
-                            class="form-control"
-                            rows="3"
-                            placeholder="Descripción del Producto"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- Configuración Adicional -->
-                <div class="col-lg-4 col-12">
-                  <!-- Estado -->
-                  <div class="card mb-6 card-lg">
-                    <div class="card-body p-6">
-                      <div class="form-check form-switch mb-4">
+
+                       <div class="mb-3 col-lg-6">
+                        <label class="form-label">Marca</label>
                         <input
-                          formControlName="activo"
-                          class="form-check-input"
-                          type="checkbox"
-                          id="flexSwitchStock"
-                        />
-                        <label class="form-check-label" for="flexSwitchStock">En Stock</label>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Precio -->
-                  <div class="card mb-6 card-lg">
-                    <div class="card-body p-6">
-                      <h4 class="mb-4 h5">Precio del Producto</h4>
-                      <div class="mb-3">
-                        <label class="form-label">Precio</label>
-                        <input
-                          formControlName="precio"
-                          type="number"
+                          formControlName="marca"
+                          type="text"
                           class="form-control"
-                          placeholder="$0.00"
+                          placeholder="Marca del Producto"
                         />
+                        <div
+                        *ngIf="productoForm.get('marca')?.touched && productoForm.get('marca')?.invalid"
+                        class="text-danger mt-1"
+                      >
+                        La marca es obligatoria.
                       </div>
-                    </div>
-                  </div>
-                  <!-- Botón -->
-                  <div class="d-grid">
-                    <button
-                      type="submit"
-                      class="btn btn-primary"
-                      [disabled]="isLoading"
-                    >
-                      {{ productoSeleccionado ? 'Guardar Cambios' : 'Crear Producto' }}
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-secondary mt-2"
-                      data-bs-dismiss="modal"
-                      (click)="resetForm()"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-            
-          </div>
-        </main>
+                      </div>
 
+                       <!-- Unidad de Medida -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Unidad de Medida</label>
+                         <select formControlName="unidad_medida" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una unidad
+                           </option>
+                           <option value="kg">Kilogramos (kg)</option>
+                           <option value="lt">Litros (lt)</option>
+                           <option value="unidad">Unidad</option>
+                         </select>
+                         <div
+                           *ngIf="productoForm.get('unidad_medida')?.touched && productoForm.get('unidad_medida')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La unidad de medida es obligatoria.
+                         </div>
+                       </div>
 
-       </div>
-       
+                       <!-- Cantidad Disponible -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Cantidad Disponible</label>
+                         <input
+                           formControlName="cantidad_disponible"
+                           type="number"
+                           class="form-control"
+                           placeholder="Cantidad"
+                         />
+                         <div
+                           *ngIf="
+                             productoForm.get('cantidad_disponible')?.touched &&
+                             productoForm.get('cantidad_disponible')?.invalid
+                           "
+                           class="text-danger mt-1"
+                         >
+                           La cantidad disponible debe ser mayor o igual a 0.
+                         </div>
+                       </div>
+
+                       <!-- Imágenes -->
+                       <div class="mb-3 col-lg-12 mt-5">
+                         <h4 class="mb-3 h5">Imágenes del Producto</h4>
+                         <nz-upload
+                           nzListType="picture-card"
+                           [nzFileList]="imagenes"
+                           [nzShowUploadList]="true"
+                           [nzAccept]="'image/*'"
+                           [nzMultiple]="false"
+                           (nzChange)="onFileChange($event)"
+                         >
+                         </nz-upload>
+                       </div>
+
+                       <!-- Descripción -->
+                       <div class="mb-3 col-lg-12 mt-5">
+                         <h4 class="mb-3 h5">Descripción del Producto</h4>
+                         <textarea
+                           formControlName="descripcion"
+                           class="form-control"
+                           rows="3"
+                           placeholder="Descripción del Producto"
+                         ></textarea>
+                         <div
+                           *ngIf="productoForm.get('descripcion')?.touched && productoForm.get('descripcion')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La descripción es obligatoria.
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Configuración Adicional -->
+               <div class="col-lg-4 col-12">
+                 <!-- Estado -->
+                 <div class="card mb-6 card-lg">
+                   <div class="card-body p-6">
+                     <div class="form-check form-switch mb-4">
+                       <input
+                         formControlName="activo"
+                         class="form-check-input"
+                         type="checkbox"
+                         id="flexSwitchStock"
+                       />
+                       <label class="form-check-label" for="flexSwitchStock">
+                         En Stock
+                       </label>
+                     </div>
+                   </div>
+                 </div>
+
+                 <!-- Precio -->
+                 <div class="card mb-6 card-lg">
+                   <div class="card-body p-6">
+                     <h4 class="mb-4 h5">Precio del Producto</h4>
+                     <div class="mb-3">
+                       <label class="form-label">Precio</label>
+                       <input
+                         formControlName="precio"
+                         type="number"
+                         class="form-control"
+                         placeholder="$0.00"
+                       />
+                       <div
+                         *ngIf="productoForm.get('precio')?.touched && productoForm.get('precio')?.invalid"
+                         class="text-danger mt-1"
+                       >
+                         El precio debe ser mayor a 0.
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+
+                 <!-- Botón -->
+                 <div class="d-grid">
+                   <button
+                     type="submit"
+                     class="btn btn-primary"
+                     [disabled]="isLoading"
+                   >
+                     <span
+                       *ngIf="isLoading"
+                       class="spinner-border spinner-border-sm me-2"
+                       role="status"
+                       aria-hidden="true"
+                     ></span>
+                     Crear Producto
+                   </button>
+                   <button
+                     type="button"
+                     class="btn btn-secondary mt-2"
+                     data-bs-dismiss="modal"
+                     (click)="resetForm()"
+                   >
+                     Cancelar
+                   </button>
+                 </div>
+               </div>
+             </div>
+           </form>
+         </div>
+       </main>
      </div>
    </div>
  </div>
+</div>
 
+
+
+
+
+
+
+ <!-- Modal editar-->
+ <div
+ class="modal fade"
+ id="editarProductoModal"
+ tabindex="-1"
+ aria-labelledby="editarProductoModalLabel"
+ aria-hidden="true"
+>
+ <div class="modal-dialog" style="max-width: 900px; margin-right: 100px;">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="editarProductoModalLabel">Editar Producto</h5>
+       <button
+         type="button"
+         class="btn-close"
+         data-bs-dismiss="modal"
+         aria-label="Cerrar"
+       ></button>
+     </div>
+     <div class="modal-body">
+       <main class="main-content-wrapper">
+         <div class="container">
+           <form [formGroup]="productoForm" (ngSubmit)="editarProducto()">
+             <div class="row">
+               <!-- Información del Producto -->
+               <div class="col-lg-8 col-12">
+                 <div class="card mb-6 card-lg">
+                   <div class="card-body p-6">
+                     <h4 class="mb-4 h5">Información del Producto</h4>
+                     <div class="row">
+                       <!-- Nombre -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Nombre</label>
+                         <input
+                           formControlName="nombre"
+                           type="text"
+                           class="form-control"
+                           placeholder="Nombre del Producto"
+                         />
+                         <div
+                           *ngIf="productoForm.get('nombre')?.touched && productoForm.get('nombre')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           El nombre es obligatorio.
+                         </div>
+                       </div>
+
+                       <!-- Categoría -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Categoría del Producto</label>
+                         <select formControlName="categoria_id" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una categoría
+                           </option>
+                           <option
+                             *ngFor="let categoria of categorias$ | async"
+                             [value]="categoria.idCategoria"
+                           >
+                             {{ categoria.nombre }}
+                           </option>
+                         </select>
+                         <div
+                           *ngIf="productoForm.get('categoria_id')?.touched && productoForm.get('categoria_id')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La categoría es obligatoria.
+                         </div>
+                       </div>
+
+                       <!-- Subcategoría -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Subcategoría</label>
+                         <select formControlName="subcategoria_id" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una subcategoría
+                           </option>
+                           <option
+                             *ngFor="let subcategoria of subcategorias$ | async"
+                             [value]="subcategoria.id_subcategoria"
+                           >
+                             {{ subcategoria.nombre }}
+                           </option>
+                         </select>
+                       </div>
+
+                       <!-- Marca -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Marca</label>
+                         <select formControlName="marca" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una marca
+                           </option>
+                           <option *ngFor="let marca of marcas" [value]="marca.id">
+                             {{ marca.nombre }}
+                           </option>
+                         </select>
+                         <div
+                           *ngIf="productoForm.get('marca')?.touched && productoForm.get('marca')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La marca es obligatoria.
+                         </div>
+                       </div>
+
+                       <!-- Unidad de Medida -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Unidad de Medida</label>
+                         <select formControlName="unidad_medida" class="form-select">
+                           <option value="" disabled selected>
+                             Seleccione una unidad
+                           </option>
+                           <option value="kg">Kilogramos (kg)</option>
+                           <option value="lt">Litros (lt)</option>
+                           <option value="unidad">Unidad</option>
+                         </select>
+                         <div
+                           *ngIf="productoForm.get('unidad_medida')?.touched && productoForm.get('unidad_medida')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La unidad de medida es obligatoria.
+                         </div>
+                       </div>
+
+                       <!-- Cantidad Disponible -->
+                       <div class="mb-3 col-lg-6">
+                         <label class="form-label">Cantidad Disponible</label>
+                         <input
+                           formControlName="cantidad_disponible"
+                           type="number"
+                           class="form-control"
+                           placeholder="Cantidad"
+                         />
+                         <div
+                           *ngIf="
+                             productoForm.get('cantidad_disponible')?.touched &&
+                             productoForm.get('cantidad_disponible')?.invalid
+                           "
+                           class="text-danger mt-1"
+                         >
+                           La cantidad disponible debe ser mayor o igual a 0.
+                         </div>
+                       </div>
+
+                       <!-- Imágenes -->
+                       <div class="mb-3 col-lg-12 mt-5">
+                         <h4 class="mb-3 h5">Imágenes del Producto</h4>
+                         <!-- Mostrar imagen actual -->
+                         <label class="form-label">Imagen Actual:</label>
+                         <div *ngIf="productoSeleccionado?.imagen_url" class="mb-3">
+                           <img
+                             [src]="productoSeleccionado.imagen_url"
+                             alt="Imagen actual del producto"
+                             class="img-thumbnail"
+                             style="max-height: 200px; max-width: 200px;"
+                           />
+                         </div>
+                         <label class="form-label">Imagen Nueva:</label>
+                         <!-- Subir nueva imagen -->
+                         <nz-upload
+                           nzListType="picture-card"
+                           [nzFileList]="imagenes"
+                           [nzShowUploadList]="true"
+                           [nzAccept]="'image/*'"
+                           [nzMultiple]="false"
+                           (nzChange)="onFileChange($event)"
+                         >
+                         </nz-upload>
+                       </div>
+
+                       <!-- Descripción -->
+                       <div class="mb-3 col-lg-12 mt-5">
+                         <h4 class="mb-3 h5">Descripción del Producto</h4>
+                         <textarea
+                           formControlName="descripcion"
+                           class="form-control"
+                           rows="3"
+                           placeholder="Descripción del Producto"
+                         ></textarea>
+                         <div
+                           *ngIf="productoForm.get('descripcion')?.touched && productoForm.get('descripcion')?.invalid"
+                           class="text-danger mt-1"
+                         >
+                           La descripción es obligatoria.
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+               <!-- Configuración Adicional -->
+               <div class="col-lg-4 col-12">
+                 <!-- Estado -->
+                 <div class="card mb-6 card-lg">
+                   <div class="card-body p-6">
+                     <div class="form-check form-switch mb-4">
+                       <input
+                         formControlName="activo"
+                         class="form-check-input"
+                         type="checkbox"
+                         id="flexSwitchStock"
+                       />
+                       <label class="form-check-label" for="flexSwitchStock">
+                         En Stock
+                       </label>
+                     </div>
+                   </div>
+                 </div>
+
+                 <!-- Precio -->
+                 <div class="card mb-6 card-lg">
+                   <div class="card-body p-6">
+                     <h4 class="mb-4 h5">Precio del Producto</h4>
+                     <div class="mb-3">
+                       <label class="form-label">Precio</label>
+                       <input
+                         formControlName="precio"
+                         type="number"
+                         class="form-control"
+                         placeholder="$0.00"
+                       />
+                       <div
+                         *ngIf="productoForm.get('precio')?.touched && productoForm.get('precio')?.invalid"
+                         class="text-danger mt-1"
+                       >
+                         El precio debe ser mayor a 0.
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+
+                 <!-- Botón -->
+                 <div class="d-grid">
+                   <button
+                     type="submit"
+                     class="btn btn-primary"
+                     [disabled]="isLoading"
+                   >
+                     <span
+                       *ngIf="isLoading"
+                       class="spinner-border spinner-border-sm me-2"
+                       role="status"
+                       aria-hidden="true"
+                     ></span>
+                     Guardar Cambios
+                   </button>
+                   <button
+                     type="button"
+                     class="btn btn-secondary mt-2"
+                     data-bs-dismiss="modal"
+                     (click)="resetForm()"
+                   >
+                     Cancelar
+                   </button>
+                 </div>
+               </div>
+             </div>
+           </form>
+         </div>
+       </main>
+     </div>
+   </div>
+ </div>
+</div>
 
 
 

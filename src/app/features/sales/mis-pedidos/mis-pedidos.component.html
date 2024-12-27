@@ -1,0 +1,60 @@
+<div class="container">
+  <!-- Row -->
+  <div class="row">
+    <!-- Sidebar (Navegación lateral fija) -->
+    <div class="col-lg-3 col-md-4 col-12 border-end d-none d-md-block">
+      <div class="pt-10 pe-lg-10">
+        <!-- Navigation -->
+        <ul class="nav flex-column nav-pills nav-pills-dark">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/ventas/ventas/order'" routerLinkActive="active">
+              <i class="feather-icon icon-shopping-bag me-2"></i>
+              Your Orders
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/ventas/ventas/settings'" routerLinkActive="active">
+              <i class="feather-icon icon-settings me-2"></i>
+              Settings
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/ventas/ventas/address'" routerLinkActive="active">
+              <i class="feather-icon icon-map-pin me-2"></i>
+              Address
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/ventas/ventas/payment'" routerLinkActive="active">
+              <i class="feather-icon icon-credit-card me-2"></i>
+              Payment Method
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/ventas/ventas/notification'" routerLinkActive="active">
+              <i class="feather-icon icon-bell me-2"></i>
+              Notification
+            </a>
+          </li>
+          <li class="nav-item">
+            <hr />
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">
+              <i class="feather-icon icon-log-out me-2"></i>
+              Log out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contenedor dinámico (Tabview) -->
+    <div class="col-lg-9 col-md-8 col-12">
+      <div class="py-6 p-md-6 p-lg-10">
+        <!-- Contenido dinámico cargado aquí -->
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

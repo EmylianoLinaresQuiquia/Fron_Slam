@@ -1,99 +1,242 @@
-<div class="container">
-  <h1>Gestión de Pedidos</h1>
+<main class="main-content-wrapper">
+  <div class="container">
+     <!-- row -->
+     <div class="row mb-8">
+        <div class="col-md-12">
+           <!-- page header -->
+           <div>
+              <h2>Order</h2>
 
-  <!-- Categorías -->
-  <section>
-    <h2>Categorías</h2>
-    <ul>
-      <li *ngFor="let categoria of categorias">
-        <strong>{{ categoria.nombre }}</strong>: {{ categoria.descripcion }}
-      </li>
-    </ul>
-  </section>
-
-  <!-- Subcategorías -->
-  <section>
-    <h2>Subcategorías</h2>
-    <ul>
-      <li *ngFor="let subcategoria of subcategorias">
-        <strong>{{ subcategoria.nombre }}</strong>: {{ subcategoria.descripcion }}
-        <small>(Categoría ID: {{ subcategoria.categoria_id }})</small>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Pedidos -->
-  <section>
-    <h2>Pedidos</h2>
-    <ul>
-      <li *ngFor="let pedido of pedidos">
-        <div class="pedido-card">
-          <p>
-            <strong>Pedido ID:</strong> {{ pedido.id_pedido }} <br />
-            <strong>Usuario ID:</strong> {{ pedido.id_usuario }} <br />
-            <strong>Total:</strong> ${{ pedido.total }} <br />
-            <strong>Estado:</strong> {{ pedido.estado }}
-          </p>
-          <button (click)="verDetallePedido(pedido.id_pedido)" class="btn btn-info">Ver Detalles</button>
-          <button (click)="crearFacturaParaPedido(pedido.id_pedido)" class="btn btn-success">Crear Factura</button>
-          <button
-            (click)="cambiarEstadoPedido(pedido.id_pedido, 'enviado')"
-            class="btn btn-warning"
-            [disabled]="pedido.estado === 'enviado' || pedido.estado === 'entregado'"
-          >
-            Marcar como Enviado
-          </button>
+           </div>
         </div>
-      </li>
-    </ul>
-  </section>
+     </div>
+     <!-- row -->
+     <div class="row">
+        <div class="col-xl-12 col-12 mb-5">
+           <!-- card -->
+           <div class="card h-100 card-lg">
+              <div class="p-6">
+                 <div class="row justify-content-between">
+                    <div class="col-md-4 col-12 mb-2 mb-md-0">
+                       <!-- form -->
+                       <form class="d-flex" role="search">
+                          <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                       </form>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-12">
+                       <!-- select -->
+                       <select class="form-select">
+                          <option selected>Status</option>
+                          <option value="Success">Success</option>
+                          <option value="Pending">Pending</option>
+                          <option value="Cancel">Cancel</option>
+                       </select>
+                    </div>
+                 </div>
+              </div>
+              <!-- card body -->
+              <div class="card-body p-0">
+                 <!-- table responsive -->
+                 <div class="table-responsive">
+                    <table class="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
+                       <thead class="bg-light">
+                          <tr>
+                             <th>
+                                <div class="form-check">
+                                   <input class="form-check-input" type="checkbox" value="" id="checkAll" />
+                                   <label class="form-check-label" for="checkAll"></label>
+                                </div>
+                             </th>
+                             <th>Image</th>
+                             <th>Order Name</th>
+                             <th>Customer</th>
+                             <th>Date & TIme</th>
+                             <th>Payment</th>
+                             <th>Status</th>
+                             <th>Amount</th>
+                             <th></th>
+                          </tr>
+                       </thead>
+                       <tbody>
+                        <tr *ngFor="let pedido of pedidos">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" />
+                            </div>
+                          </td>
+                          <td>
+                            <a href="#!">
+                              <img
+                                [src]="pedido.imagenes_productos ? pedido.imagenes_productos.split(',')[0].trim() : 'path/to/default-image.jpg'"
+                                alt="Producto"
+                                class="icon-shape icon-md"
+                              />
 
-  <!-- Detalles del Pedido -->
-  <section *ngIf="detallesPedido.length > 0">
-    <h3>Detalles del Pedido</h3>
-    <ul>
-      <li *ngFor="let detalle of detallesPedido">
-        <strong>Producto ID:</strong> {{ detalle.id_producto }} -
-        <strong>Cantidad:</strong> {{ detalle.cantidad }} -
-        <strong>Precio Unitario:</strong> ${{ detalle.precio_unitario }}
-      </li>
-    </ul>
-  </section>
+                            </a>
+                          </td>
+                          <td><a class="text-reset">{{ pedido.nombre_pedido }}</a></td>
+                          <td>{{ pedido.cliente }}</td>
+                          <td>{{ pedido.fecha_pedido | date: 'short' }}</td>
+                          <td>{{ pedido.metodo_pago }}</td>
+                          <td>
+                            <span
+                              class="badge"
+                              [ngClass]="{
+                                'bg-light-primary text-dark-primary': pedido.estado === 'enviado',
+                                'bg-light-danger text-dark-danger': pedido.estado === 'pendiente'
+                              }"
+                            >
+                              {{ pedido.estado }}
+                            </span>
+                          </td>
+                          <td>{{ pedido.cantidad_total }}</td>
+                          <td>
+                            <div class="dropdown">
+                              <a class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="feather-icon icon-more-vertical fs-5"></i>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li>
+                                  <a class="dropdown-item" >
+                                    <i class="bi bi-trash me-3"></i>
+                                    Delete
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productModal" (click)="onEditPedido(pedido.id_pedido!)">
+                                    <i class="bi bi-pencil-square me-3"></i>
+                                    Edit
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
 
-  <!--
-  <section>
-    <h2>Usuarios</h2>
-    <ul>
-      <li *ngFor="let usuario of usuarios">
-        <p>
-          <strong>Nombre:</strong> {{ usuario.nombre }} <br />
-          <strong>Rol ID:</strong> {{ usuario.id_rol }} <br />
-          <strong>Activo:</strong> {{ usuario.activo ? 'Sí' : 'No' }}
-        </p>
-        <button (click)="verDetalleUsuario(usuario.id_usuario)" class="btn btn-info">
-          Ver Detalles
-        </button>
-      </li>
-    </ul>
-  </section>
+                    </table>
+                 </div>
+              </div>
+              <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                 <span>Showing 1 to 8 of 12 entries</span>
+                 <nav class="mt-2 mt-md-0">
+                    <ul class="pagination mb-0">
+                       <li class="page-item disabled"><a class="page-link" href="#!">Previous</a></li>
+                       <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+                       <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                       <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                       <li class="page-item"><a class="page-link" href="#!">Next</a></li>
+                    </ul>
+                 </nav>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</main>
 
-  <section *ngIf="detalleUsuario">
-    <h3>Detalles del Usuario</h3>
-    <p>
-      <strong>Email:</strong> {{ detalleUsuario.email }} <br />
-      <strong>Teléfono:</strong> {{ detalleUsuario.telefono }} <br />
-      <strong>Dirección:</strong> {{ detalleUsuario.direccion_calle }}, {{ detalleUsuario.direccion_ciudad }},
-      {{ detalleUsuario.direccion_codigo_postal }}, {{ detalleUsuario.direccion_pais }}
-    </p>
-  </section>-->
 
-  <!-- Métodos de Pago -->
-  <section>
-    <h2>Métodos de Pago</h2>
-    <ul>
-      <li *ngFor="let metodo of metodosPago">
-        <strong>{{ metodo.nombre }}</strong>
-      </li>
-    </ul>
-  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div
+  class="modal fade"
+  id="productModal"
+  tabindex="-1"
+  aria-labelledby="productModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" style="max-width: 1100px; margin-right: 50px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalLabel">
+          Pedido ID: {{ PedidoDetalle?.pedido?.id_pedido }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <main class="main-content-wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-12">
+                <div class="mb-6">
+                  <h6>Detalles del Cliente</h6>
+                  <p class="mb-1 lh-lg">
+                    {{ PedidoDetalle?.pedido?.cliente }}
+                    <br />
+                    Estado: {{ PedidoDetalle?.pedido?.estado }}
+                    <br />
+                    Método de Pago: {{ PedidoDetalle?.pedido?.metodo_pago }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-12">
+                <div class="mb-6">
+                  <h6>Detalles del Pedido</h6>
+                  <p class="mb-1 lh-lg">
+                    Nombre del Pedido: {{ PedidoDetalle?.pedido?.nombre_pedido }}
+                    <br />
+                    Fecha del Pedido:
+                    {{ PedidoDetalle?.pedido?.fecha_pedido | date: 'short' }}
+                    <br />
+                    Cantidad Total: {{ PedidoDetalle?.pedido?.cantidad_total }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="table-responsive">
+                  <table class="table mb-0 text-nowrap table-centered">
+                    <thead class="bg-light">
+                      <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let producto of PedidoDetalle?.productos">
+                        <td>{{ producto?.producto }}</td>
+                        <td>{{ producto?.precio_unitario | currency }}</td>
+                        <td>{{ producto?.cantidad }}</td>
+                        <td>{{ producto?.total | currency }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="fw-semibold text-dark">Total General</td>
+                        <!--<td class="fw-semibold text-dark">
+                          {{
+                            PedidoDetalle?.productos?.reduce(
+                              (acc, item) => acc + item.total,
+                              0
+                            ) | currency
+                          }}
+                        </td>-->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
 </div>
