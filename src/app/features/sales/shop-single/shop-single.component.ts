@@ -1,5 +1,5 @@
 import { Component,ElementRef, ViewChild } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
+
 import { SharedModule } from '../../../shared/shared.module';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class ShopSingleComponent {
   productos: any[] = [];
   productoSeleccionado: any;
 
-  constructor(private cookieService: CookieService,
+  constructor(
     private location: Location,
     private productService: ProductoService,
     private sharedService: SharedService,
@@ -32,13 +32,13 @@ export class ShopSingleComponent {
   ngOnInit(): void {
     this.currentUrl = window.location.href;
     // Recupera los detalles del producto desde la cookie
-    const productoJson = this.cookieService.get('productoSeleccionado');
+    /*const productoJson = this.cookieService.get('productoSeleccionado');
     if (productoJson) {
       this.producto = JSON.parse(productoJson);
       console.log('Producto recuperado:', this.producto);
     } else {
       console.warn('No se encontró información del producto.');
-    }
+    }*/
 
     // Cargar productos desde el servicio
     this.productService.obtenerProductos().subscribe((data) => {
@@ -114,7 +114,7 @@ export class ShopSingleComponent {
       next: (producto) => {
         this.productoSeleccionado = producto; // Guarda el producto seleccionado
         // Guarda el producto en una cookie
-        this.cookieService.set('productoSeleccionado', JSON.stringify(producto), { path: '/' });
+        //this.cookieService.set('productoSeleccionado', JSON.stringify(producto), { path: '/' });
 
         // Redirige al componente ShopSingleComponent
         this.router.navigate(['/ventas/shop-single']);

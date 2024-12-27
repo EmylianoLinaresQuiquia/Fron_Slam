@@ -6,7 +6,7 @@ import { IUsuarioLogin } from '../../../api-client';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../shared/services/alert.service';
-import { CookieService } from 'ngx-cookie-service';
+
 import { UsuarioDetalles } from '../../admin/interfaces/Usuario';
 @Component({
   selector: 'app-login',

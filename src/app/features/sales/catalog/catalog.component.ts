@@ -3,7 +3,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { ProductoService } from '../../admin/services/producto.service';
 import { Productolist,Producto } from '../../admin/interfaces/producto.model';
 import { SharedService } from '../../admin/services/shared.service';
-import { CookieService } from 'ngx-cookie-service';
+
 import { Router } from '@angular/router';
 import { CarritoService } from '../../../shared/services/carrito.service';
 declare var $: any;
@@ -23,8 +23,7 @@ export class CatalogComponent  {
   producto: any = null;
   constructor(private productService: ProductoService,
     private sharedService: SharedService,
-    private cookieService: CookieService,
-    private router: Router,
+     private router: Router,
     private carritoService: CarritoService
   ) {}
 
@@ -101,7 +100,7 @@ export class CatalogComponent  {
       next: (producto) => {
         this.productoSeleccionado = producto; // Guarda el producto seleccionado
         // Guarda el producto en una cookie
-        this.cookieService.set('productoSeleccionado', JSON.stringify(producto), { path: '/' });
+       // this.cookieService.set('productoSeleccionado', JSON.stringify(producto), { path: '/' });
 
         // Redirige al componente ShopSingleComponent
         this.router.navigate(['/ventas/shop-single']);

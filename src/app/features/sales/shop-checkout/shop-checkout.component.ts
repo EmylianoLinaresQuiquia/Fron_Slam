@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { ApiClient } from '../../../api-client';
 import { CrearPedidoRequest } from '../../../api-client';
-import { CookieService } from 'ngx-cookie-service';
+
 @Component({
   selector: 'app-shop-checkout',
   standalone: true,
@@ -26,18 +26,18 @@ export class ShopCheckoutComponent {
   total: number = 0;
 
   constructor(private apiClient: ApiClient,
-    private cookieService: CookieService
+
   ) {}
 
   ngOnInit(): void {
     this.cargarDatosCheckout();
-    const userCookie = this.cookieService.get('user');
+    /*const userCookie = this.cookieService.get('user');
     if (userCookie) {
       this.user = JSON.parse(userCookie);
       console.log('Datos del usuario cargados:', this.user);
     } else {
       console.warn('No se encontraron datos de usuario.');
-    }
+    }*/
   }
 
   cargarDatosCheckout(): void {

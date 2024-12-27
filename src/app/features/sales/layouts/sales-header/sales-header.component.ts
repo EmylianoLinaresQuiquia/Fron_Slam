@@ -6,7 +6,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { SharedService } from '../../../admin/services/shared.service';
 import { IUsuarioPost } from '../../../../api-client';
 import { UsuarioLogin } from './../../../../api-client';
-import { CookieService } from 'ngx-cookie-service';
+
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
@@ -63,7 +63,7 @@ export class SalesHeaderComponent implements OnInit,AfterViewInit {
     private sharedService: SharedService,
     private apiClientService: ApiClient,
     public alertService: AlertService,
-    private cookieService: CookieService,
+
     private fb: FormBuilder,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -128,10 +128,10 @@ export class SalesHeaderComponent implements OnInit,AfterViewInit {
 
   loadUserFromStorage(): void {
     try {
-      const user = this.cookieService.get('user');
+      /*const user = this.cookieService.get('user');
       if (user) {
         this.user.next(JSON.parse(user));
-      }
+      }*/
     } catch (error) {
       this.alertService.showAlert('error', 'Error al cargar el usuario desde el almacenamiento.');
       console.error('Error en loadUserFromStorage:', error);
@@ -252,7 +252,7 @@ export class SalesHeaderComponent implements OnInit,AfterViewInit {
           this.failedAttempts = 0;
 
           if (response?.mensaje?.startsWith('Inicio de sesión exitoso')) {
-            this.cookieService.set('user', JSON.stringify(response), { path: '/', expires: 7 });
+            //this.cookieService.set('user', JSON.stringify(response), { path: '/', expires: 7 });
             this.alertService.showAlert('success', `Bienvenido, ${response.nombre}.`);
             this.cerrarModal();
           } else {

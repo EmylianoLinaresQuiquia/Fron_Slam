@@ -1,7 +1,7 @@
 import { Component ,Output,EventEmitter,CUSTOM_ELEMENTS_SCHEMA,OnInit } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { CookieService } from 'ngx-cookie-service';
+
 import { ApiClient } from '../../../../api-client';
 import { ReporteService } from '../../services/reporte.service';
 import { Notificacion,RespuestaNotificaciones } from '../../interfaces/reporte';
