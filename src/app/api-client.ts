@@ -296,7 +296,7 @@ export class ApiClient implements IApiClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
       this.http = http;
-      this.baseUrl = baseUrl ?? "https://localhost:7171"; // Cambia por tu URL real
+      this.baseUrl = baseUrl ?? "https://back-slam-9063874ff5f1.herokuapp.com"; // Cambia por tu URL real
   }
 
     /**

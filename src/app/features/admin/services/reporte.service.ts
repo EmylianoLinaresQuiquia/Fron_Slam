@@ -8,7 +8,7 @@ import { Notificacion ,RespuestaNotificaciones} from '../interfaces/reporte';
 })
 export class ReporteService {
 
-  private baseUrl = 'https://localhost:7171/api/Reportes'; // Cambia a la URL de tu backend
+  private baseUrl = 'https://back-slam-9063874ff5f1.herokuapp.com/api/Reportes'; // Cambia a la URL de tu backend
   constructor(private http: HttpClient) {}
 
   // Método para obtener las notificaciones

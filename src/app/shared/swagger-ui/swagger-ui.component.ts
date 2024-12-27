@@ -12,7 +12,7 @@ export class SwaggerUiComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     SwaggerUI({
       dom_id: '#swagger-container', // ID del contenedor donde se renderiza
-      url: 'https://localhost:7171/swagger/v1/swagger.json', // URL de tu archivo OpenAPI
+      url: 'https://back-slam-9063874ff5f1.herokuapp.com/swagger/v1/swagger.json', // URL de tu archivo OpenAPI
       deepLinking: true,
       presets: [SwaggerUI.presets.apis],
       layout: "BaseLayout"

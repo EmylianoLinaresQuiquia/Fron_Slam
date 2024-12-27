@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://localhost:7171/swagger/v1/swagger.json",
+      "url": "https://back-slam-9063874ff5f1.herokuapp.com/swagger/v1/swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }

@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://localhost:7171/api/',
+    apiUrl: 'https://back-slam-9063874ff5f1.herokuapp.com/api/',
 
 
     firebase: {

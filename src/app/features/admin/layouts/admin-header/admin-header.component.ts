@@ -5,6 +5,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ApiClient } from '../../../../api-client';
 import { ReporteService } from '../../services/reporte.service';
 import { Notificacion,RespuestaNotificaciones } from '../../interfaces/reporte';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 @Component({
   selector: 'app-admin-header',
   standalone: true,
@@ -30,7 +31,7 @@ export class AdminHeaderComponent implements OnInit{
 
   notificaciones: RespuestaNotificaciones | null = null;
   errorMessage: string = '';
-  constructor(private ApiClient: ApiClient,
+  constructor(private ApiClient: ApiClient,private storageService: LocalStorageService,
     private reporteService: ReporteService) {}
 
   ngOnInit() {
@@ -47,26 +48,15 @@ export class AdminHeaderComponent implements OnInit{
 
 
 
-    const userLocalStorage = localStorage.getItem('user'); // Recuperar datos desde localStorage
-    if (userLocalStorage) {
-      try {
-        this.user = JSON.parse(userLocalStorage); // Parsear datos JSON
-        console.log('Datos del usuario cargados desde localStorage:', this.user);
-
-        // Asignar valores a las propiedades
-        this.nombreUsuario = this.user.nombre || 'No disponible';
-        this.emailUsuario = this.user.email || 'No disponible';
-        this.rolUsuario = this.user.rol || 'No definido';
-      } catch (error) {
-        console.error('Error al analizar los datos del usuario desde localStorage:', error);
-        this.setDefaultUser();
-      }
+    const user = this.storageService.getItem('user');
+    if (user) {
+        this.user = user;
+        this.nombreUsuario = user.nombre || 'No disponible';
+        this.emailUsuario = user.email || 'No disponible';
+        this.rolUsuario = user.rol || 'No definido';
     } else {
-      console.warn('No se encontraron datos del usuario en localStorage.');
-      this.setDefaultUser();
+        this.setDefaultUser();
     }
-
-    console.log('Estado final del usuario en AdminHeaderComponent:', this.user);
   }
 
   private setDefaultUser() {
