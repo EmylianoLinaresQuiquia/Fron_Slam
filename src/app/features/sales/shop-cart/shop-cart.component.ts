@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 @Component({
   selector: 'app-shop-cart',
   standalone: true,
@@ -14,7 +15,9 @@ export class ShopCartComponent {
   serviceFee: number = 3; // Fee fijo
   total: number = 0;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+    private localStorageService: LocalStorageService
+  ) {}
 
   ngOnInit(): void {
     this.cargarCarrito();
@@ -22,19 +25,15 @@ export class ShopCartComponent {
   }
 
   cargarCarrito(): void {
-    const carritoActual = localStorage.getItem('carrito');
+    const carritoActual = this.localStorageService.getItem('carrito');
     if (carritoActual) {
-      try {
-        this.carrito = JSON.parse(carritoActual);
-        console.log("Carrito cargado:", this.carrito);
-      } catch (error) {
-        console.error('Error al parsear el carrito:', error);
-        this.carrito = [];
-      }
+      this.carrito = carritoActual;
+      console.log('Carrito cargado:', this.carrito);
     } else {
       this.carrito = [];
     }
   }
+
 
   incrementarCantidad(item: any): void {
     item.cantidad_disponible++;
@@ -62,11 +61,18 @@ export class ShopCartComponent {
   }
 
   actualizarCarrito(): void {
-    localStorage.setItem('carrito', JSON.stringify(this.carrito));
+    this.localStorageService.setItem('carrito', this.carrito);
   }
 
+
   irACheckout(): void {
-    localStorage.setItem('checkoutData', JSON.stringify({ carrito: this.carrito, subtotal: this.subtotal, total: this.total }));
+    const checkoutData = {
+      carrito: this.carrito,
+      subtotal: this.subtotal,
+      total: this.total,
+    };
+    this.localStorageService.setItem('checkoutData', checkoutData);
     this.router.navigate(['/ventas/checkout']);
   }
+
 }

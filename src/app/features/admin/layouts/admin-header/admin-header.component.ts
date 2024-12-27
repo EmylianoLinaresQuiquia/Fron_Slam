@@ -79,12 +79,15 @@ export class AdminHeaderComponent implements OnInit{
     this.emailUsuario = null;
     this.rolUsuario = null;
   }
-  logout() {
-    localStorage.removeItem('user'); // Eliminar datos del usuario de localStorage
+  logout(): void {
+    this.storageService.removeItem('user'); // Eliminar datos del usuario
     this.clearUserData();
     console.log('Sesión cerrada. Redirigiendo...');
-    window.location.href = '/login'; // Redirigir al inicio de sesión
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login'; // Redirigir al inicio de sesión (solo en cliente)
+    }
   }
+
 
 
   navigationInfo = {

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { ApiClient } from '../../../api-client';
 import { CrearPedidoRequest } from '../../../api-client';
-
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 @Component({
   selector: 'app-shop-checkout',
   standalone: true,
@@ -26,6 +26,7 @@ export class ShopCheckoutComponent {
   total: number = 0;
 
   constructor(private apiClient: ApiClient,
+    private localStorageService: LocalStorageService
 
   ) {}
 
@@ -41,15 +42,13 @@ export class ShopCheckoutComponent {
   }
 
   cargarDatosCheckout(): void {
-    const checkoutData = localStorage.getItem('checkoutData');
+    const checkoutData = this.localStorageService.getItem('checkoutData');
     if (checkoutData) {
-      const data = JSON.parse(checkoutData);
-      this.carrito = data.carrito || [];
-      this.subtotal = data.subtotal || 0;
-      this.total = data.total || 0;
+      this.carrito = checkoutData.carrito || [];
+      this.subtotal = checkoutData.subtotal || 0;
+      this.total = checkoutData.total || 0;
     }
   }
-
   enviarPedido(): void {
     const pedido = {
       id_usuario: this.user.idUsuario ,

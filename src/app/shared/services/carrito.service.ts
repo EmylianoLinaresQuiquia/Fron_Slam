@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { LocalStorageService } from './local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
 
   private carrito = new BehaviorSubject<any[]>(this.obtenerCarritoInicial());
-
   carrito$ = this.carrito.asObservable();
 
+  constructor(private localStorageService: LocalStorageService) {}
+
   private obtenerCarritoInicial(): any[] {
-    const carritoActual = localStorage.getItem('carrito');
-    return carritoActual ? JSON.parse(carritoActual) : [];
+    const carritoActual = this.localStorageService.getItem('carrito');
+    return carritoActual ? carritoActual : [];
   }
 
   agregarProducto(producto: any): void {
     const carritoActual = this.carrito.value;
     const nuevoCarrito = [...carritoActual, producto];
-
-    localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+    this.localStorageService.setItem('carrito', nuevoCarrito);
     this.carrito.next(nuevoCarrito);
   }
 
@@ -26,8 +27,7 @@ export class CarritoService {
     const carritoActual = this.carrito.value;
     const nuevoCarrito = [...carritoActual];
     nuevoCarrito.splice(index, 1);
-
-    localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+    this.localStorageService.setItem('carrito', nuevoCarrito);
     this.carrito.next(nuevoCarrito);
   }
 

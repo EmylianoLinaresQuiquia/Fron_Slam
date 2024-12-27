@@ -6,7 +6,7 @@ import { IUsuarioLogin } from '../../../api-client';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../shared/services/alert.service';
-
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { UsuarioDetalles } from '../../admin/interfaces/Usuario';
 @Component({
   selector: 'app-login',
@@ -31,7 +31,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private apiClient: ApiClient,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private localStorageService: LocalStorageService
   ) {
     this.loginForm = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -67,8 +68,8 @@ export class LoginComponent {
         if (response?.mensaje?.startsWith('Inicio de sesión exitoso')) {
           const userDetails = response as UsuarioDetalles;
 
-          // Guardar detalles del usuario en localStorage
-          localStorage.setItem('user', JSON.stringify(userDetails));
+          // Guardar detalles del usuario en el servicio de almacenamiento
+          this.localStorageService.setItem('user', userDetails);
 
           this.alertService.showAlert('success', `Bienvenido, ${userDetails.nombre}.`, 5000);
           this.router.navigate(['/admin/dashboard']);
@@ -95,4 +96,5 @@ export class LoginComponent {
       },
     });
   }
+
 }
