@@ -13,7 +13,7 @@ export class CarritoService {
 
   private obtenerCarritoInicial(): any[] {
     const carritoActual = this.localStorageService.getItem('carrito');
-    return carritoActual ? carritoActual : [];
+    return carritoActual || []; // Si está en SSR, siempre retornará un carrito vacío.
   }
 
   agregarProducto(producto: any): void {

@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LocalStorageService {
-
   private esNavegador(): boolean {
     return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
@@ -18,21 +17,17 @@ export class LocalStorageService {
         return null;
       }
     }
-    return null; // Si no está en el navegador, retorna null.
+    return null; // En SSR, siempre retornará null.
   }
 
   setItem(key: string, value: any): void {
     if (this.esNavegador()) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-      } catch (error) {
-        console.error('Error al guardar en localStorage:', error);
-      }
+      localStorage.setItem(key, JSON.stringify(value));
     }
   }
 
   removeItem(key: string): void {
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    if (this.esNavegador()) {
       localStorage.removeItem(key);
     }
   }
