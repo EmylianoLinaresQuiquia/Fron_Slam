@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { Notificacion ,RespuestaNotificaciones} from '../interfaces/reporte';
 @Injectable({
   providedIn: 'root'
 })
 export class ReporteService {
 
-  private baseUrl = 'https://back-slam-9063874ff5f1.herokuapp.com/api/Reportes'; // Cambia a la URL de tu backend
+ private apiUrl = `${environment.apiUrl}`;
   constructor(private http: HttpClient) {}
 
   // Método para obtener las notificaciones
   obtenerNotificaciones(): Observable<RespuestaNotificaciones> {
-    return this.http.get<RespuestaNotificaciones>(`${this.baseUrl}/notificaciones`).pipe(
+    return this.http.get<RespuestaNotificaciones>(`${this.apiUrl}Reportes/notificaciones`).pipe(
       catchError(this.handleError)
     );
   }
